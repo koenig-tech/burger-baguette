@@ -685,13 +685,13 @@ export default function BrandIdentity() {
             title="Vier Kernfarben, ein Akzent."
             copy="Ink und Cream tragen die Flächen, Gold setzt Akzente, Tan schafft Wärme, Herb steht für Frische."
           />
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-[var(--bb-border)] bg-[var(--bb-border)] sm:grid-cols-2 lg:grid-cols-5">
+          <div className="flex snap-x overflow-x-auto overflow-y-hidden rounded-2xl border border-[var(--bb-border)] bg-[var(--bb-border)]">
             {colors.map(c => {
               const ink = c.dark ? "#F4F1EA" : "#241A14";
               return (
                 <div
                   key={c.name}
-                  className="flex min-h-56 flex-col justify-between p-6"
+                  className="flex min-h-[160px] min-w-[72%] snap-start flex-col justify-between border-r border-[var(--bb-border)] p-4 last:border-r-0 sm:min-w-[42%] lg:min-w-[20%]"
                   style={{ background: c.hex }}
                 >
                   <code

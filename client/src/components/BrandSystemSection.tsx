@@ -122,7 +122,7 @@ export default function BrandSystemSection() {
               return (
                 <div
                   key={nameKey}
-                  className="group relative flex min-h-40 flex-col justify-between p-5 sm:min-h-52 sm:p-6 lg:min-h-60"
+                  className="group relative flex min-h-[160px] flex-col justify-between p-4"
                   style={{ backgroundColor: color }}
                 >
                   <code

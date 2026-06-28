@@ -539,21 +539,18 @@ html.light {
     }
   }
 
-  @keyframes scroll-concept-route {
+  @keyframes scroll-concept-zoom-out {
     0% {
-      clip-path: inset(0 9% 0 0 round 8px);
-      filter: saturate(0.82) contrast(0.95);
-      transform: translate3d(-3rem, 1.4rem, 0) scale(0.96);
+      filter: brightness(0.92) saturate(0.92) contrast(0.96);
+      transform: scale(1.16);
     }
     52% {
-      clip-path: inset(0 round 8px);
-      filter: saturate(1.05) contrast(1);
-      transform: translate3d(0, 0, 0) scale(1);
+      filter: brightness(0.9) saturate(1) contrast(1);
+      transform: scale(1.06);
     }
     100% {
-      clip-path: inset(0 0 0 8% round 8px);
-      filter: saturate(0.92) contrast(1.03);
-      transform: translate3d(2rem, -1rem, 0) scale(1.03);
+      filter: brightness(0.88) saturate(1.04) contrast(1.02);
+      transform: scale(1);
     }
   }
 
@@ -719,11 +716,12 @@ html.light {
         will-change: transform;
       }
 
-      #concept .bb-image-tile {
-        animation: scroll-concept-route linear both;
+      #concept .bb-image-tile > img {
+        animation: scroll-concept-zoom-out linear both;
         animation-timeline: --bb-section-progress;
         animation-range: entry 0% exit 100%;
-        will-change: transform, filter, clip-path;
+        transform-origin: center center;
+        will-change: transform, filter;
       }
 
       #brand .bb-image-tile,
