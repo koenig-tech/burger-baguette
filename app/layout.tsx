@@ -66,6 +66,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" dir="ltr" className="dark" data-theme="dark">
+      <head>
+        <link rel="stylesheet" href="/fonts/google-fonts.css" />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>
