@@ -117,13 +117,13 @@ export default function BrandSystemSection() {
               {t("brand_palette_note")}
             </span>
           </div>
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-[var(--bb-border)] bg-[var(--bb-border)] sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--bb-border)] bg-[var(--bb-border)] lg:grid-cols-4">
             {palette.map(([color, nameKey, descKey, dark]) => {
               const ink = dark ? "#F4F1EA" : "#241A14";
               return (
                 <div
                   key={nameKey}
-                  className="group relative flex min-h-44 flex-col justify-between p-6 sm:min-h-52 lg:min-h-60"
+                  className="group relative flex min-h-40 flex-col justify-between p-5 sm:min-h-52 sm:p-6 lg:min-h-60"
                   style={{ backgroundColor: color }}
                 >
                   <code
