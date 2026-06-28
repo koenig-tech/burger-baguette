@@ -5,10 +5,4 @@ import { registerServiceWorker } from "./registerServiceWorker";
 
 createRoot(document.getElementById("root")!).render(<App />);
 
-window.requestAnimationFrame(() => {
-  window.requestAnimationFrame(() => {
-    document.getElementById("bb-ssr-shell")?.remove();
-  });
-});
-
 registerServiceWorker();
