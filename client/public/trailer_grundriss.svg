@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1696" height="1056"
+     viewBox="0 0 1696 1056">
+  <defs>
+    <style>
+      text { font-family: Arial, Helvetica, sans-serif; }
+    </style>
+  </defs>
+<rect width="1696" height="976" fill="#F0EDE8"/>
+<text x="848.0" y="38.0" style="font-size:20px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;font-weight:bold;">FOOD TRAILER  5,2 m × 2,2 m  –  INTERIOR LAYOUT</text>
+<text x="848.0" y="58.0" style="font-size:12px;font-family:Arial,sans-serif;fill:#555;text-anchor:middle;font-style:italic;">Aktualisiert mit echten Gerätemaßen (Mai 2026)</text>
+<rect x="120.0" y="120.0" width="1456.0" height="616.0" fill="#2C3E50" stroke="#1a2a4a" stroke-width="3" rx="0" opacity="1.0"/>
+<rect x="148.0" y="148.0" width="1400.0" height="560.0" fill="#D5CFC7" stroke="#999" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="120.0" y="316.0" width="33.6" height="224.0" fill="#ECF0F1" stroke="#E74C3C" stroke-width="2.5" rx="0" opacity="1.0"/>
+<path d="M 120.0 540.0 A 224.0 224.0 0 0 0 -104.0 316.0" fill="none" stroke="#E74C3C" stroke-width="1.5" stroke-dasharray="6,3"/>
+<text x="134.0" y="412.4" style="font-size:8px;font-family:Arial,sans-serif;fill:#E74C3C;text-anchor:middle;">
+  <tspan x="134.0" dy="0.0">TUER</tspan>
+  <tspan x="134.0" dy="10.4">80×190</tspan>
+  <tspan x="134.0" dy="10.4">links</tspan>
+  <tspan x="134.0" dy="10.4">außen</tspan>
+</text>
+<rect x="425.2" y="148.0" width="569.7" height="70.0" fill="#BDC3C7" stroke="#7F8C8D" stroke-width="1.5" rx="3" opacity="0.7"/>
+<text x="710.1" y="184.4" style="font-size:9px;font-family:Arial,sans-serif;fill:#555;text-anchor:middle;font-weight:bold;">VENTILATIONSHAUBE</text>
+<rect x="127.9" y="148.0" width="141.4" height="126.0" fill="#AED6F1" stroke="#2980B9" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="198.6" y="200.6" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="198.6" dy="0.0">HANDWASCH</tspan>
+  <tspan x="198.6" dy="10.4">EMP.DKE.001</tspan>
+  <tspan x="198.6" dy="10.4">50,5×45</tspan>
+</text>
+<line x1="127.9" y1="102.0" x2="269.3" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="127.9" y1="97.0" x2="127.9" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="269.3" y1="97.0" x2="269.3" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="198.6" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">50</text>
+<rect x="249.3" y="148.0" width="196.0" height="196.0" fill="#85C1E9" stroke="#2471A3" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="347.3" y="235.6" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="347.3" dy="0.0">SPÜLBECKEN</tspan>
+  <tspan x="347.3" dy="10.4">EMP.E.77085</tspan>
+  <tspan x="347.3" dy="10.4">70×70</tspan>
+</text>
+<line x1="249.3" y1="102.0" x2="445.3" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="249.3" y1="97.0" x2="249.3" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="445.3" y1="97.0" x2="445.3" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="347.3" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">70</text>
+<rect x="425.2" y="148.0" width="252.0" height="177.8" fill="#F1948A" stroke="#C0392B" stroke-width="2" rx="0" opacity="1.0"/>
+<rect x="439.2" y="162.0" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="439.2" y="209.6" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="439.2" y="257.2" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="512.0" y="162.0" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="512.0" y="209.6" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="512.0" y="257.2" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="584.8" y="162.0" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="584.8" y="209.6" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<rect x="584.8" y="257.2" width="56.0" height="33.6" fill="none" stroke="#C0392B" stroke-width="1" rx="0" opacity="1.0"/>
+<text x="551.2" y="226.5" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="551.2" dy="0.0">GRILLPLATTE</tspan>
+  <tspan x="551.2" dy="10.4">EMP.6IE030</tspan>
+  <tspan x="551.2" dy="10.4">90×63,5</tspan>
+</text>
+<line x1="425.2" y1="102.0" x2="677.2" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="425.2" y1="97.0" x2="425.2" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="677.2" y1="97.0" x2="677.2" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="551.2" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">90</text>
+<rect x="657.2" y="148.0" width="224.0" height="204.4" fill="#F0B27A" stroke="#D35400" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="769.2" y="239.8" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="769.2" dy="0.0">FRITTEUSE</tspan>
+  <tspan x="769.2" dy="10.4">EMP.PLS.7FE020</tspan>
+  <tspan x="769.2" dy="10.4">80×73</tspan>
+</text>
+<line x1="657.2" y1="102.0" x2="881.2" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="657.2" y1="97.0" x2="657.2" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="881.2" y1="97.0" x2="881.2" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="769.2" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">80</text>
+<rect x="861.1" y="148.0" width="133.8" height="180.3" fill="#FAD7A0" stroke="#E67E22" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="928.0" y="227.8" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="928.0" dy="0.0">TOASTER</tspan>
+  <tspan x="928.0" dy="10.4">EMP.MEK010</tspan>
+  <tspan x="928.0" dy="10.4">47,8×64,4</tspan>
+</text>
+<line x1="861.1" y1="102.0" x2="995.0" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="861.1" y1="97.0" x2="861.1" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="995.0" y1="97.0" x2="995.0" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="928.0" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">48</text>
+<rect x="974.9" y="148.0" width="448.0" height="224.0" fill="#F9E79F" stroke="#D4AC0D" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="1198.9" y="249.6" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="1198.9" dy="0.0">ARBEITSTISCH</tspan>
+  <tspan x="1198.9" dy="10.4">PREMIUM</tspan>
+  <tspan x="1198.9" dy="10.4">160×80</tspan>
+</text>
+<line x1="974.9" y1="102.0" x2="1422.9" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="974.9" y1="97.0" x2="974.9" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1422.9" y1="97.0" x2="1422.9" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="1198.9" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">160</text>
+<rect x="1402.9" y="148.0" width="165.2" height="172.2" fill="#A9DFBF" stroke="#1E8449" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="1485.5" y="223.7" style="font-size:8px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="1485.5" dy="0.0">KÜHLSCHRANK</tspan>
+  <tspan x="1485.5" dy="10.4">330L</tspan>
+  <tspan x="1485.5" dy="10.4">59×61,5</tspan>
+</text>
+<line x1="1402.9" y1="102.0" x2="1568.1" y2="102.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1402.9" y1="97.0" x2="1402.9" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1568.1" y1="97.0" x2="1568.1" y2="107.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="1485.5" y="98.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">59</text>
+<rect x="148.0" y="456.0" width="714.0" height="252.0" fill="#AED6F1" stroke="#2471A3" stroke-width="2.5" rx="0" opacity="1.0"/>
+<text x="505.0" y="564.5" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:middle;">
+  <tspan x="505.0" dy="0.0">SALADETTE TORONTO</tspan>
+  <tspan x="505.0" dy="11.7">255×90 cm</tspan>
+  <tspan x="505.0" dy="11.7">4 Türen · 6×GN 1/1</tspan>
+  <tspan x="505.0" dy="11.7">Granit-Arbeitsplatte</tspan>
+</text>
+<rect x="890.0" y="624.0" width="504.0" height="84.0" fill="#FAD7A0" stroke="#D35400" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="1142.0" y="666.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#D35400;text-anchor:middle;">AUSGABETHEKE  180×30 cm</text>
+<rect x="1422.0" y="540.0" width="196.0" height="168.0" fill="#D7BDE2" stroke="#7D3C98" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="1520.0" y="612.3" style="font-size:9px;font-family:Arial,sans-serif;fill:#7D3C98;text-anchor:middle;">
+  <tspan x="1520.0" dy="0.0">KASSE</tspan>
+  <tspan x="1520.0" dy="11.7">70×60</tspan>
+  <tspan x="1520.0" dy="11.7">cm</tspan>
+</text>
+<rect x="176.0" y="708.0" width="1148.0" height="28.0" fill="#85C1E9" stroke="#2471A3" stroke-width="2" rx="0" opacity="1.0"/>
+<text x="750.0" y="722.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#2471A3;text-anchor:middle;font-weight:bold;">AUSGABEFENSTER  410 cm</text>
+<line x1="120.0" y1="74.0" x2="1576.0" y2="74.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="120.0" y1="69.0" x2="120.0" y2="79.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1576.0" y1="69.0" x2="1576.0" y2="79.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="848.0" y="70.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">520 cm (Außenmaß)</text>
+<line x1="1604.0" y1="120.0" x2="1604.0" y2="736.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1599.0" y1="120.0" x2="1609.0" y2="120.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1599.0" y1="736.0" x2="1609.0" y2="736.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="1618.0" y="428.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:start;">220 cm (Außenmaß)</text>
+<line x1="148.0" y1="782.0" x2="1548.0" y2="782.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="148.0" y1="777.0" x2="148.0" y2="787.0" stroke="#1a5276" stroke-width="1.2"/>
+<line x1="1548.0" y1="777.0" x2="1548.0" y2="787.0" stroke="#1a5276" stroke-width="1.2"/>
+<text x="848.0" y="796.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#1a5276;text-anchor:middle;">500 cm (Innenmaß)</text>
+<text x="120.0" y="776.0" style="font-size:11px;font-family:Arial,sans-serif;fill:#1a2a4a;text-anchor:start;font-weight:bold;">LEGENDE:</text>
+<rect x="120.0" y="786.0" width="14.0" height="12.0" fill="#AED6F1" stroke="#2471A3" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="140.0" y="796.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Wasserversorgung (Handwasch, Spülbecken, Saladette)</text>
+<rect x="605.0" y="786.0" width="14.0" height="12.0" fill="#F1948A" stroke="#C0392B" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="625.0" y="796.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Grill (EMP.6IE030 · 900×635mm · 732 €)</text>
+<rect x="1090.0" y="786.0" width="14.0" height="12.0" fill="#F0B27A" stroke="#D35400" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="1110.0" y="796.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Fritteuse (EMP.PLS.7FE020 · 800×730mm · 1.028 €)</text>
+<rect x="120.0" y="808.0" width="14.0" height="12.0" fill="#FAD7A0" stroke="#E67E22" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="140.0" y="818.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Toaster (EMP.MEK010 · 478×644mm · 586 €)</text>
+<rect x="605.0" y="808.0" width="14.0" height="12.0" fill="#F9E79F" stroke="#D4AC0D" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="625.0" y="818.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Arbeitstisch PREMIUM (1600×800mm · 350 €)</text>
+<rect x="1090.0" y="808.0" width="14.0" height="12.0" fill="#A9DFBF" stroke="#1E8449" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="1110.0" y="818.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Kühlschrank 330L (590×615×1921mm · 200 €)</text>
+<rect x="120.0" y="830.0" width="14.0" height="12.0" fill="#D7BDE2" stroke="#7D3C98" stroke-width="1.5" rx="0" opacity="1.0"/>
+<text x="140.0" y="840.0" style="font-size:9px;font-family:Arial,sans-serif;fill:#333;text-anchor:start;">Kassenbereich (70×60cm)</text>
+</svg>

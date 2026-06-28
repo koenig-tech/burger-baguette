@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /intranet/
+Disallow: /dienstplan
+Disallow: /lohnabrechnung
+Disallow: /personalakte
+
+Sitemap: https://burger-baguette.de/sitemap.xml

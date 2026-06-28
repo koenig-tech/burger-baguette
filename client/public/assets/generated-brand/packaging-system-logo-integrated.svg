@@ -1,0 +1,36 @@
+<svg width="1672" height="941" viewBox="0 0 1672 941" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="softPrint" x="-20%" y="-20%" width="140%" height="140%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <image href="/assets/generated-brand/packaging-system-blank-source.png" x="0" y="0" width="1672" height="941" preserveAspectRatio="xMidYMid slice"/>
+
+  <g opacity="0.98" filter="url(#softPrint)">
+    <!-- Paper bag sticker -->
+    <image href="/assets/brand/logo-badge-cream.svg" x="1105" y="279" width="180" height="180"/>
+
+    <!-- Burger box lid sticker -->
+    <image href="/assets/brand/logo-badge-cream.svg" x="656" y="367" width="114" height="114"/>
+
+    <!-- Fries cup sticker -->
+    <image href="/assets/brand/logo-badge-cream.svg" x="376" y="544" width="110" height="110"/>
+
+    <!-- Baguette wrap sticker -->
+    <image href="/assets/brand/logo-badge-cream.svg" x="1218" y="594" width="112" height="112"/>
+
+    <!-- Napkin stack sticker -->
+    <image href="/assets/brand/logo-badge-cream.svg" x="447" y="748" width="126" height="126"/>
+
+    <!-- Sticker roll front label -->
+    <g transform="translate(906 758) rotate(-15)">
+      <image href="/assets/brand/logo-badge-cream.svg" x="-59" y="-59" width="118" height="118"/>
+    </g>
+
+    <!-- Sticker strip label -->
+    <g transform="translate(1112 826) rotate(-12)">
+      <image href="/assets/brand/logo-badge-cream.svg" x="-48" y="-48" width="96" height="96"/>
+    </g>
+  </g>
+</svg>

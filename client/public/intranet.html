@@ -1,0 +1,3168 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Burger & Baguette – Systemhandbuch</title>
+  <link rel="stylesheet" href="/fonts/google-fonts.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --bg-dark: #1E1209;
+      --bg-darker: #160E06;
+      --bg-darkest: #0D0804;
+      --bg-card: #2C1810;
+      --gold: #C9A84C;
+      --gold-light: #D4AF37;
+      --cream: #F4F1EA;
+      --cream-muted: #EDE8DC;
+      --text-muted: rgba(237,232,220,0.6);
+      --sidebar-w: 260px;
+      --green: #4ade80;
+      --red: #f87171;
+    }
+    /* ===== PASSWORD OVERLAY ===== */
+    #pw-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-darkest);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #pw-overlay.hidden { display: none; }
+    .pw-box {
+      background: var(--bg-card);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 16px;
+      padding: 48px 40px;
+      text-align: center;
+      max-width: 380px;
+      width: 90%;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+    }
+    .pw-logo {
+      width: 56px; height: 56px;
+      background: var(--gold);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--bg-dark);
+      margin: 0 auto 20px;
+    }
+    .pw-box h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 6px;
+    }
+    .pw-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+    .pw-input-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .pw-input-wrap input {
+      width: 100%;
+      background: var(--bg-darker);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px;
+      padding: 12px 44px 12px 16px;
+      color: var(--cream);
+      font-size: 15px;
+      font-family: 'DM Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .pw-input-wrap input:focus { border-color: var(--gold); }
+    .pw-input-wrap input.error { border-color: #f87171; animation: shake 0.3s; }
+    .pw-toggle {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--text-muted);
+      cursor: pointer; font-size: 16px;
+      padding: 4px;
+    }
+    .pw-btn {
+      width: 100%;
+      background: var(--gold);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 8px;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .pw-btn:hover { background: var(--gold-light); }
+    .pw-error {
+      color: #f87171;
+      font-size: 12px;
+      margin-top: 10px;
+      min-height: 18px;
+    }
+    .pw-footer {
+      margin-top: 24px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-darker);
+      color: var(--cream);
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--bg-darkest);
+      border-right: 1px solid rgba(201,168,76,0.15);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh;
+      overflow-y: auto;
+      z-index: 100;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-logo {
+      padding: 24px 20px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .sidebar-logo .bb-icon {
+      width: 40px; height: 40px;
+      background: var(--gold);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: var(--bg-dark);
+      margin-bottom: 10px;
+    }
+    .sidebar-logo h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.3;
+    }
+    .sidebar-logo p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+    .sidebar-section {
+      padding: 16px 12px 8px;
+    }
+    .sidebar-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      padding: 0 8px;
+      margin-bottom: 6px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover { background: rgba(201,168,76,0.08); color: var(--cream); }
+    .nav-item.active { background: rgba(201,168,76,0.15); color: var(--gold); font-weight: 600; }
+    .nav-item .nav-icon { font-size: 16px; width: 20px; text-align: center; }
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 20px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      min-height: 100vh;
+    }
+    .topbar {
+      background: var(--bg-darkest);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .topbar-badge {
+      font-size: 11px;
+      background: rgba(201,168,76,0.15);
+      color: var(--gold);
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+    .content {
+      padding: 32px;
+      max-width: 1100px;
+    }
+
+    /* ===== PAGE SECTIONS ===== */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ===== COMPONENTS ===== */
+    .page-header {
+      margin-bottom: 32px;
+    }
+    .page-header .label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .page-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    .gold-divider {
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+      margin: 16px 0 28px;
+      width: 60px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 8px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 12px;
+    }
+    .card h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gold);
+      margin-bottom: 10px;
+    }
+    .card p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+    /* KPI Cards */
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .kpi-card .kpi-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 4px;
+    }
+    .kpi-card .kpi-label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Checklist */
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      font-size: 13.5px;
+      color: var(--cream-muted);
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li .check-box {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(201,168,76,0.4);
+      border-radius: 4px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .checklist li .check-box:hover { border-color: var(--gold); }
+    .checklist li .check-box.checked { background: var(--gold); border-color: var(--gold); }
+    .checklist li .check-box.checked::after { content: '✓'; font-size: 11px; color: var(--bg-dark); font-weight: 700; }
+
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    .data-table th {
+      text-align: left;
+      padding: 10px 14px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(201,168,76,0.06);
+      color: var(--cream-muted);
+    }
+    .data-table tr:hover td { background: rgba(201,168,76,0.04); }
+    .data-table .price { color: var(--gold); font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
+    .data-table .green { color: var(--green); }
+    .data-table .red { color: var(--red); }
+
+    /* Badge */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .badge-gold { background: rgba(201,168,76,0.15); color: var(--gold); border: 1px solid rgba(201,168,76,0.3); }
+    .badge-green { background: rgba(74,222,128,0.1); color: var(--green); border: 1px solid rgba(74,222,128,0.3); }
+    .badge-red { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.3); }
+
+    /* Timeline */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 8px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .timeline-item { position: relative; margin-bottom: 24px; }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -24px; top: 4px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 2px solid var(--bg-darker);
+    }
+    .timeline-item h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .timeline-item p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+
+    /* Recipe Card */
+    .recipe-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(201,168,76,0.12);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .recipe-card .recipe-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .recipe-card .recipe-header h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--cream);
+    }
+    .recipe-card .recipe-body { padding: 16px 20px; }
+    .recipe-card .recipe-body p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 12px; }
+    .recipe-card .ingredient-list { list-style: none; }
+    .recipe-card .ingredient-list li {
+      font-size: 13px;
+      color: var(--cream-muted);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(201,168,76,0.06);
+      display: flex;
+      justify-content: space-between;
+    }
+    .recipe-card .ingredient-list li .qty { color: var(--gold); font-weight: 500; }
+
+    /* Steps */
+    .steps { counter-reset: step; list-style: none; }
+    .steps li {
+      counter-increment: step;
+      display: flex;
+      gap: 14px;
+      margin-bottom: 14px;
+      font-size: 13.5px;
+      color: var(--cream-muted);
+      line-height: 1.6;
+    }
+    .steps li::before {
+      content: counter(step);
+      min-width: 26px; height: 26px;
+      background: rgba(201,168,76,0.15);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* Alert */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .alert-warning { background: rgba(251,191,36,0.08); border: 1px solid rgba(251,191,36,0.25); color: #fbbf24; }
+    .alert-info { background: rgba(96,165,250,0.08); border: 1px solid rgba(96,165,250,0.2); color: #93c5fd; }
+    .alert-success { background: rgba(74,222,128,0.08); border: 1px solid rgba(74,222,128,0.2); color: var(--green); }
+    .alert .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+    /* Progress bar */
+    .progress-bar {
+      height: 6px;
+      background: rgba(201,168,76,0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    .progress-bar .fill {
+      height: 100%;
+      background: linear-gradient(to right, var(--gold), var(--gold-light));
+      border-radius: 3px;
+    }
+
+    /* Mobile toggle */
+    .mobile-toggle {
+      display: none;
+      position: fixed;
+      top: 14px; left: 14px;
+      z-index: 200;
+      background: var(--gold);
+      color: var(--bg-dark);
+      border: none;
+      border-radius: 6px;
+      width: 36px; height: 36px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; }
+      .mobile-toggle { display: flex; align-items: center; justify-content: center; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .content { padding: 20px 16px; }
+      .topbar { padding: 14px 16px 14px 56px; }
+    }
+
+    /* Tabs inside pages */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-card);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 24px;
+      border: 1px solid rgba(201,168,76,0.12);
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .tab-btn:hover { color: var(--cream); }
+    .tab-btn.active { background: var(--gold); color: var(--bg-dark); font-weight: 600; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ===== EDIT MODE ===== */
+    .edit-mode-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      border: 1px solid rgba(201,168,76,0.4);
+      background: transparent;
+      color: var(--gold);
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .edit-mode-btn:hover { background: rgba(201,168,76,0.1); }
+    .edit-mode-btn.active { background: var(--gold); color: var(--bg-dark); border-color: var(--gold); }
+    .edit-mode-btn .edit-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: none;
+    }
+    .edit-mode-btn.active .edit-dot {
+      animation: pulse-dot 1.2s infinite;
+    }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    /* Editable elements in edit mode */
+    body.edit-mode [data-editable="0"] {
+      outline: 1px dashed rgba(201,168,76,0.5);
+      border-radius: 3px;
+      cursor: text;
+      transition: outline 0.15s;
+      min-width: 20px;
+      display: inline-block;
+    }
+    body.edit-mode [data-editable="1"]:hover {
+      outline: 2px solid rgba(201,168,76,0.8);
+      background: rgba(201,168,76,0.05);
+    }
+    body.edit-mode [data-editable="2"]:focus {
+      outline: 2px solid var(--gold);
+      background: rgba(201,168,76,0.08);
+      border-radius: 3px;
+    }
+
+    /* Edit mode indicator bar */
+    .edit-mode-bar {
+      display: none;
+      position: fixed;
+      bottom: 0; left: var(--sidebar-w); right: 0;
+      background: var(--gold);
+      color: var(--bg-dark);
+      padding: 10px 32px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      z-index: 200;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .edit-mode-bar.visible { display: flex; }
+    .edit-mode-bar .bar-actions { display: flex; gap: 10px; }
+    .bar-btn {
+      padding: 6px 16px;
+      border-radius: 5px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'Space Grotesk', sans-serif;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .bar-btn-save { background: var(--bg-dark); color: var(--gold); }
+    .bar-btn-save:hover { background: var(--bg-darker); }
+    .bar-btn-discard { background: rgba(0,0,0,0.2); color: var(--bg-dark); }
+    .bar-btn-discard:hover { background: rgba(0,0,0,0.3); }
+
+    /* Toast notification */
+    .edit-toast {
+      position: fixed;
+      bottom: 60px; right: 32px;
+      background: #1a2e1a;
+      border: 1px solid rgba(74,222,128,0.4);
+      color: #4ade80;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: 'Space Grotesk', sans-serif;
+      z-index: 300;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.3s;
+      pointer-events: none;
+    }
+    .edit-toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- PASSWORD OVERLAY -->
+<div id="pw-overlay">
+  <div class="pw-box">
+    <div class="pw-logo">BB</div>
+    <h2>Systemhandbuch</h2>
+    <p>Bitte geben Sie das Passwort ein, um Zugang zu erhalten.</p>
+    <div class="pw-input-wrap">
+      <input type="password" id="pw-input" placeholder="Passwort eingeben" onkeydown="if(event.key==='Enter')checkPassword()" />
+      <button class="pw-toggle" onclick="togglePwVis()" title="Passwort anzeigen">👁</button>
+    </div>
+    <button class="pw-btn" onclick="checkPassword()">Anmelden</button>
+    <div class="pw-error" id="pw-error"></div>
+    <div class="pw-footer">Burger & Baguette · Internes Systemhandbuch · v1.0</div>
+  </div>
+</div>
+
+<button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="bb-icon">BB</div>
+    <h1>Burger & Baguette</h1>
+    <p>Systemhandbuch v1.0</p>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Übersicht</div>
+    <button class="nav-item active" onclick="showPage('dashboard', this)">
+      <span class="nav-icon">🏠</span> Dashboard
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Betrieb</div>
+    <button class="nav-item" onclick="showPage('operations', this)">
+      <span class="nav-icon">⚙️</span> Betrieb & Prozesse
+    </button>
+    <button class="nav-item" onclick="showPage('hygiene', this)">
+      <span class="nav-icon">🧼</span> Hygiene & HACCP
+    </button>
+    <button class="nav-item" onclick="showPage('locations', this)">
+      <span class="nav-icon">📍</span> Standorte
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Produkte</div>
+    <button class="nav-item" onclick="showPage('recipes', this)">
+      <span class="nav-icon">🍔</span> Rezepte & Speisekarte
+    </button>
+    <button class="nav-item" onclick="showPage('quality', this)">
+      <span class="nav-icon">⭐</span> Qualitätsstandards
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Finanzen</div>
+    <button class="nav-item" onclick="showPage('finance', this)">
+      <span class="nav-icon">💰</span> Finanzen & KPIs
+    </button>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Team & Technik</div>
+    <button class="nav-item" onclick="showPage('team', this)">
+      <span class="nav-icon">👥</span> Team & Schulung
+    </button>
+    <button class="nav-item" onclick="showPage('tech', this)">
+      <span class="nav-icon">🔧</span> Technik & Wartung
+    </button>
+    <button class="nav-item" onclick="showPage('costing', this)">
+      <span class="nav-icon">🧮</span> Kostenkalkulation
+    </button>
+    <button class="nav-item" onclick="showPage('marketing', this)">
+      <span class="nav-icon">📣</span> Marketing
+    </button>
+    <button class="nav-item" onclick="showPage('ausstattung', this)">
+      <span class="nav-icon">🔧</span> Ausstattung & Investition
+    </button>
+    <a href="/dienstplan" target="_blank" class="nav-item" style="text-decoration:none;display:flex;align-items:center;gap:10px;color:var(--text-muted);">
+      <span class="nav-icon">📅</span> Dienstplan
+      <span style="font-size:10px;background:rgba(201,168,76,0.2);color:#C9A84C;border-radius:4px;padding:1px 5px;margin-left:auto;">NEU</span>
+    </a>
+  </div>
+  <div class="nav-group">
+    <a href="/lohnabrechnung" target="_blank" class="nav-item" style="text-decoration:none;display:flex;align-items:center;gap:10px;color:var(--text-muted);">
+      <span class="nav-icon">💶</span> Lohnabrechnung
+      <span style="font-size:10px;background:rgba(201,168,76,0.2);color:#C9A84C;border-radius:4px;padding:1px 5px;margin-left:auto;">NEU</span>
+    </a>
+  </div>
+  <div class="nav-group">
+    <a href="/personalakte" target="_blank" class="nav-item" style="text-decoration:none;display:flex;align-items:center;gap:10px;color:var(--text-muted);">
+      <span class="nav-icon">🗂️</span> Personalakte
+      <span style="font-size:10px;background:rgba(201,168,76,0.2);color:#C9A84C;border-radius:4px;padding:1px 5px;margin-left:auto;">NEU</span>
+    </a>
+  </div>
+
+  <div class="sidebar-footer">
+    Stand: April 2026 · Intern
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <span class="topbar-title" id="topbar-title">Dashboard</span>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="topbar-badge">Internes Systemhandbuch</span>
+      <button class="edit-mode-btn" id="edit-mode-btn" onclick="toggleEditMode()" title="Bearbeitungsmodus aktivieren">
+        <span class="edit-dot"></span>
+        <span id="edit-mode-label">Bearbeiten</span>
+      </button>
+      <a id="admin-panel-btn" href="/intranet/admin" target="_blank" style="display:none;padding:6px 14px;background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;">&#128101; Benutzerverwaltung</a>
+      <a id="intranet-login-btn" href="/intranet/login" target="_blank" style="padding:6px 14px;background:rgba(201,168,76,0.1);color:var(--gold);border:1px solid rgba(201,168,76,0.2);border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;" title="Anmelden für erweiterte Funktionen">&#128274; Anmelden</a>
+      <span id="intranet-user-badge" style="display:none;padding:4px 12px;background:rgba(74,222,128,0.1);color:#4ade80;border:1px solid rgba(74,222,128,0.2);border-radius:20px;font-size:12px;font-weight:600;"></span>
+    </div>
+  </div>
+
+  <!-- EDIT MODE BAR -->
+  <div class="edit-mode-bar" id="edit-mode-bar">
+    <span>✏️ &nbsp;Bearbeitungsmodus aktiv – Klicke auf einen Text um ihn zu bearbeiten</span>
+    <div class="bar-actions">
+      <button class="bar-btn bar-btn-discard" onclick="discardEdits()">Verwerfen</button>
+      <button class="bar-btn bar-btn-save" onclick="saveEdits()">💾 Speichern</button>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="edit-toast" id="edit-toast"></div>
+
+  <div class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="page active" id="page-dashboard">
+      <div class="page-header">
+        <div class="label">Willkommen</div>
+        <h2>Burger & Baguette – Systemhandbuch</h2>
+        <p>Dieses Intranet ist das zentrale Nachschlagewerk für Betrieb, Rezepte, Standards und Finanzen des Foodtruck-Konzepts.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="3" contenteditable="false">~65K€</div>
+          <div class="kpi-label" data-editable="4" contenteditable="false">Gesamtinvestition</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="5" contenteditable="false">1.500–2.500€</div>
+          <div class="kpi-label" data-editable="6" contenteditable="false">Tagesumsatz Ziel</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="7" contenteditable="false">46,2%</div>
+          <div class="kpi-label" data-editable="8" contenteditable="false">Gewinnmarge</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="9" contenteditable="false">ca. 2 Mon.</div>
+          <div class="kpi-label" data-editable="10" contenteditable="false">Amortisation</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3><span data-editable="11" contenteditable="false">📋 Tages-Checkliste – Öffnung</span></h3>
+          <ul class="checklist" id="open-checklist">
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Anhänger auf Standort fahren & ausrichten</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Strom anschließen (230V)</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Verkaufsklappen öffnen & sichern</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Kühlgeräte auf Temperatur prüfen (&lt;4°C)</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Zutaten auffüllen & Frische prüfen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Grillplatte vorheizen (180–200°C)</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Kassensystem starten & Wechselgeld prüfen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Schilder & Menütafel aufstellen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Hygieneschutz anlegen (Handschuhe, Schürze)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span data-editable="12" contenteditable="false">🔒 Tages-Checkliste – Schließung</span></h3>
+          <ul class="checklist" id="close-checklist">
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Grillplatte reinigen & abkühlen lassen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Restbestände kühlen oder entsorgen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Arbeitsflächen desinfizieren</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Kassenbericht erstellen & Tageseinnahmen notieren</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Abfall entsorgen & Behälter reinigen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Verkaufsklappen schließen & verriegeln</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Strom trennen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Anhänger sichern (Schloss, Stützrad)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="13" contenteditable="false">📌 Schnellzugriff</span></h3>
+        <div class="grid-4" style="margin-top:12px;">
+          <button class="nav-item" onclick="showPage('recipes', document.querySelector('[onclick*=recipes]'))" style="background:rgba(201,168,76,0.08);border-radius:8px;padding:16px;flex-direction:column;align-items:center;gap:8px;height:auto;">
+            <span style="font-size:28px;">🍔</span>
+            <span style="font-size:12px;color:var(--cream);">Rezepte</span>
+          </button>
+          <button class="nav-item" onclick="showPage('finance', document.querySelector('[onclick*=finance]'))" style="background:rgba(201,168,76,0.08);border-radius:8px;padding:16px;flex-direction:column;align-items:center;gap:8px;height:auto;">
+            <span style="font-size:28px;">💰</span>
+            <span style="font-size:12px;color:var(--cream);">Finanzen</span>
+          </button>
+          <button class="nav-item" onclick="showPage('hygiene', document.querySelector('[onclick*=hygiene]'))" style="background:rgba(201,168,76,0.08);border-radius:8px;padding:16px;flex-direction:column;align-items:center;gap:8px;height:auto;">
+            <span style="font-size:28px;">🧼</span>
+            <span style="font-size:12px;color:var(--cream);">Hygiene</span>
+          </button>
+          <button class="nav-item" onclick="showPage('tech', document.querySelector('[onclick*=tech]'))" style="background:rgba(201,168,76,0.08);border-radius:8px;padding:16px;flex-direction:column;align-items:center;gap:8px;height:auto;">
+            <span style="font-size:28px;">🔧</span>
+            <span style="font-size:12px;color:var(--cream);">Technik</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BETRIEB & PROZESSE ===== -->
+    <div class="page" id="page-operations">
+      <div class="page-header">
+        <div class="label">Betrieb</div>
+        <h2>Betrieb & Prozesse</h2>
+        <p>Standardisierte Abläufe für einen reibungslosen Tagesbetrieb in drei Servicephasen.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showTab('ops', 'morning', this)">🌅 Vorbereitung (09–11 Uhr)</button>
+        <button class="tab-btn" onclick="showTab('ops', 'noon', this)">☀️ Mittagsschicht (11–15 Uhr)</button>
+        <button class="tab-btn" onclick="showTab('ops', 'evening', this)">🌙 Abendschicht (15–21 Uhr)</button>
+        <button class="tab-btn" onclick="showTab('ops', 'setup', this)">📐 Standort-Setup</button>
+      </div>
+
+      <div class="tab-content active" id="ops-tab-morning">
+        <div class="grid-2">
+          <div class="card">
+            <h3><span data-editable="14" contenteditable="false">🌅 Vorbereitung – Mise en Place (09:00–11:00 Uhr)</span></h3>
+            <p style="margin-bottom:16px;">Die Vorbereitungsphase dient ausschließlich der Mise en Place. <strong>Kein Verkauf</strong> in dieser Zeit. Verkaufsstart ist um <strong>11:00 Uhr</strong>. Fokus liegt auf Qualitätsvorbereitung und einem reibungslosen Verkaufsstart.</p>
+            <h4>Ablauf</h4>
+            <ol class="steps">
+              <li>Anfahrt zum Standort spätestens 08:45 Uhr</li>
+              <li>Anhänger positionieren, Stützrad absenken, Strom anschließen</li>
+              <li>Kühltemperaturen kontrollieren: Fleisch &lt;4°C, Getränke &lt;8°C</li>
+              <li>Grillplatte vorheizen auf 180–200°C (ca. 15 Minuten)</li>
+              <li>Baguettes schneiden & Mise en Place vorbereiten</li>
+              <li>Kassensystem starten, Wechselgeld bereitstellen (mind. 100€)</li>
+              <li>Abschluss Vorbereitung bis 10:50 Uhr – alles bereit für Verkaufsstart</li>
+              <li><strong>Verkaufsöffnung um 11:00 Uhr</strong> – Schild aufstellen, Klappen öffnen</li>
+            </ol>
+          </div>
+          <div class="card">
+            <h4>Erwarteter Umsatz Morgens</h4>
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Baguettes (Hauptprodukt)</span>
+                <span style="font-size:13px;color:var(--gold);">60%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:60%"></div></div>
+            </div>
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Burger</span>
+                <span style="font-size:13px;color:var(--gold);">25%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:25%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Getränke & Extras</span>
+                <span style="font-size:13px;color:var(--gold);">15%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:15%"></div></div>
+            </div>
+            <div class="alert alert-info" style="margin-top:20px;">
+              <span class="alert-icon">ℹ️</span>
+              <span>Vorbereitungsphase: <strong>09:00–11:00 Uhr</strong> (kein Verkauf)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="ops-tab-noon">
+        <div class="grid-2">
+          <div class="card">
+            <h3><span data-editable="15" contenteditable="false">☀️ Mittagsschicht – Hauptgeschäft</span></h3>
+            <p style="margin-bottom:16px;">Die Mittagszeit ist die umsatzstärkste Phase. Schnelle Bedienung und hohe Produktqualität sind entscheidend.</p>
+            <h4>Ablauf</h4>
+            <ol class="steps">
+              <li>Bestände auffüllen (Fleisch, Brot, Gemüse) bis 10:45 Uhr</li>
+              <li>Zweite Person pünktlich um 11:00 Uhr für Verkaufsstart einplanen</li>
+              <li>Ziel: max. 3–4 Minuten Wartezeit pro Kunde</li>
+              <li>Kassenbericht Zwischenstand um 13:00 Uhr</li>
+              <li>Fritteusenöl nach 8 Stunden wechseln</li>
+              <li>Abfallbehälter leeren bei Bedarf</li>
+            </ol>
+          </div>
+          <div class="card">
+            <h4>Erwarteter Umsatz Mittags</h4>
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Burger (Hauptprodukt)</span>
+                <span style="font-size:13px;color:var(--gold);">55%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:55%"></div></div>
+            </div>
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Baguettes</span>
+                <span style="font-size:13px;color:var(--gold);">30%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:30%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Getränke & Extras</span>
+                <span style="font-size:13px;color:var(--gold);">15%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:15%"></div></div>
+            </div>
+            <div class="alert alert-success" style="margin-top:20px;">
+              <span class="alert-icon">✅</span>
+              <span>Ziel-Umsatz Mittagsschicht: <strong>700–1.200 €</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="ops-tab-evening">
+        <div class="grid-2">
+          <div class="card">
+            <h3><span data-editable="16" contenteditable="false">🌙 Abendschicht – Events & Feierabend</span></h3>
+            <p style="margin-bottom:16px;">Die Abendphase eignet sich besonders für Veranstaltungen, Einkaufszentren und Freizeitstandorte.</p>
+            <h4>Ablauf</h4>
+            <ol class="steps">
+              <li>Standortwechsel ggf. bis 14:30 Uhr abgeschlossen</li>
+              <li>Restbestände prüfen – ggf. nachbestellen</li>
+              <li>Beleuchtung einschalten (Innenleuchte FL)</li>
+              <li>Abendmenü ggf. anpassen (Specials)</li>
+              <li>Kassenbericht Abschluss um 21:00 Uhr</li>
+              <li>Schließungsroutine starten (siehe Dashboard)</li>
+            </ol>
+          </div>
+          <div class="card">
+            <h4>Erwarteter Umsatz Abends</h4>
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Burger</span>
+                <span style="font-size:13px;color:var(--gold);">65%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:65%"></div></div>
+            </div>
+            <div style="margin-bottom:20px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Baguettes</span>
+                <span style="font-size:13px;color:var(--gold);">20%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:20%"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:13px;color:var(--text-muted);">Getränke & Extras</span>
+                <span style="font-size:13px;color:var(--gold);">15%</span>
+              </div>
+              <div class="progress-bar"><div class="fill" style="width:15%"></div></div>
+            </div>
+            <div class="alert alert-warning" style="margin-top:20px;">
+              <span class="alert-icon">⚠️</span>
+              <span>Ziel-Umsatz Abendschicht: <strong>400–700 €</strong> (standortabhängig)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="ops-tab-setup">
+        <div class="card">
+          <h3><span data-editable="17" contenteditable="false">📐 Standort-Setup Anleitung</span></h3>
+          <div class="grid-2" style="margin-top:16px;">
+            <div>
+              <h4>Anforderungen an den Standort</h4>
+              <table class="data-table" style="margin-top:8px;">
+                <tr><td>Stellfläche</td><td class="price" data-editable="18" contenteditable="false">mind. 6 × 4 m</td></tr>
+                <tr><td>Stromversorgung</td><td class="price" data-editable="19" contenteditable="false">230V / 16A CEE</td></tr>
+                <tr><td>Abstand zu Gebäuden</td><td class="price" data-editable="20" contenteditable="false">mind. 2 m</td></tr>
+                <tr><td>Zufahrt Fahrzeug</td><td class="price" data-editable="21" contenteditable="false">Breite mind. 3,5 m</td></tr>
+                <tr><td>Bodenbelag</td><td class="price" data-editable="22" contenteditable="false">Asphalt / Pflaster</td></tr>
+              </table>
+            </div>
+            <div>
+              <h4>Aufbau-Reihenfolge</h4>
+              <ol class="steps" style="margin-top:8px;">
+                <li>Anhänger mit Zugfahrzeug positionieren</li>
+                <li>Stützrad absenken, Deichsel sichern</li>
+                <li>4 Stützen ausfahren & nivellieren</li>
+                <li>Stromkabel anschließen (230V)</li>
+                <li>Verkaufsklappen öffnen & arretieren</li>
+                <li>Einstiegstür vorne öffnen</li>
+                <li>Rangiergriffe verstauen</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== HYGIENE & HACCP ===== -->
+    <div class="page" id="page-hygiene">
+      <div class="page-header">
+        <div class="label">Hygiene</div>
+        <h2>Hygiene & HACCP</h2>
+        <p>Verbindliche Hygienestandards gemäß EU-Lebensmittelhygieneverordnung (EG) Nr. 852/2004.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="alert alert-warning">
+        <span class="alert-icon">⚠️</span>
+        <span><strong>Pflicht:</strong> Alle Mitarbeiter müssen ein gültiges Gesundheitszeugnis (§ 43 IfSG) besitzen und die Hygieneunterweisung jährlich erneuern.</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3><span data-editable="23" contenteditable="false">🌡️ Kritische Kontrollpunkte (HACCP)</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead>
+              <tr><th>Kontrollpunkt</th><th>Grenzwert</th><th>Maßnahme</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Fleischkühlung</td><td class="price" data-editable="24" contenteditable="false">&lt; 4°C</td><td>2× täglich messen</td></tr>
+              <tr><td>Garkerntemperatur</td><td class="price" data-editable="25" contenteditable="false">&gt; 72°C</td><td>Kernthermometer</td></tr>
+              <tr><td>Frittiertemperatur</td><td class="price" data-editable="26" contenteditable="false">170–180°C</td><td>Thermostat prüfen</td></tr>
+              <tr><td>Frittieröl-Wechsel</td><td class="price" data-editable="27" contenteditable="false">alle 8h</td><td>Protokoll führen</td></tr>
+              <tr><td>Handwäsche</td><td class="price" data-editable="28" contenteditable="false">alle 30 Min.</td><td>Desinfektionsmittel</td></tr>
+              <tr><td>Oberflächen</td><td class="price" data-editable="29" contenteditable="false">nach jeder Nutzung</td><td>Desinfektionsspray</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3><span data-editable="30" contenteditable="false">🧹 Reinigungsplan</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead>
+              <tr><th>Bereich</th><th>Häufigkeit</th><th>Mittel</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Grillplatte</td><td>Nach jeder Nutzung</td><td>Grillreiniger</td></tr>
+              <tr><td>Arbeitsflächen</td><td>Stündlich</td><td>Desinfektionsspray</td></tr>
+              <tr><td>Friteuse</td><td>Täglich</td><td>Fettlöser</td></tr>
+              <tr><td>Böden</td><td>Täglich</td><td>Wischmopp + Desinfekt.</td></tr>
+              <tr><td>Kühlgeräte</td><td>Wöchentlich</td><td>Lebensmittelsicher</td></tr>
+              <tr><td>Außenwände Truck</td><td>Wöchentlich</td><td>Hochdruckreiniger</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="31" contenteditable="false">🦠 Allergene – Kennzeichnungspflicht</span></h3>
+        <p style="margin-bottom:16px;">Gemäß EU-Lebensmittelinformationsverordnung (LMIV) müssen folgende 14 Hauptallergene gekennzeichnet werden:</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="badge badge-gold" data-editable="32" contenteditable="false">A – Gluten</span>
+          <span class="badge badge-gold" data-editable="33" contenteditable="false">B – Krebstiere</span>
+          <span class="badge badge-gold" data-editable="34" contenteditable="false">C – Eier</span>
+          <span class="badge badge-gold" data-editable="35" contenteditable="false">D – Fisch</span>
+          <span class="badge badge-gold" data-editable="36" contenteditable="false">E – Erdnüsse</span>
+          <span class="badge badge-gold" data-editable="37" contenteditable="false">F – Soja</span>
+          <span class="badge badge-gold" data-editable="38" contenteditable="false">G – Milch/Laktose</span>
+          <span class="badge badge-gold" data-editable="39" contenteditable="false">H – Schalenfrüchte</span>
+          <span class="badge badge-gold" data-editable="40" contenteditable="false">L – Sellerie</span>
+          <span class="badge badge-gold" data-editable="41" contenteditable="false">M – Senf</span>
+          <span class="badge badge-gold" data-editable="42" contenteditable="false">N – Sesam</span>
+          <span class="badge badge-gold" data-editable="43" contenteditable="false">O – Schwefeldioxid</span>
+          <span class="badge badge-gold" data-editable="44" contenteditable="false">P – Lupinen</span>
+          <span class="badge badge-gold" data-editable="45" contenteditable="false">R – Weichtiere</span>
+        </div>
+        <div class="alert alert-info" style="margin-top:16px;">
+          <span class="alert-icon">ℹ️</span>
+          <span>Allergenliste muss am Verkaufsstand gut sichtbar ausgehängt sein. Auf Nachfrage muss jeder Mitarbeiter Auskunft geben können.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== STANDORTE ===== -->
+    <div class="page" id="page-locations">
+      <div class="page-header">
+        <div class="label">Standorte</div>
+        <h2>Standortstrategie</h2>
+        <p>Flexible Positionierung an frequentierten Standorten – morgens, mittags und abends.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3><span data-editable="46" contenteditable="false">🌅 Frühstandorte</span></h3>
+          <p style="margin-bottom:12px;">Firmenparkplätze, Gewerbegebiete, Industriegebiete</p>
+          <ul class="checklist">
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Betriebsgelände mit mind. 200 Mitarbeitern</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Genehmigung des Betriebsrats einholen</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Standgebühr: 5–15% des Tagesumsatzes</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span data-editable="47" contenteditable="false">☀️ Mittagsstandorte</span></h3>
+          <p style="margin-bottom:12px;">Einkaufszentren, Marktplätze, Fußgängerzonen</p>
+          <ul class="checklist">
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Genehmigung Ordnungsamt / Centermanagement</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Mindestabstand zu stationären Gastrobetrieben</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Standgebühr: 8–20% des Tagesumsatzes</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3><span data-editable="48" contenteditable="false">🌙 Abendstandorte</span></h3>
+          <p style="margin-bottom:12px;">Veranstaltungen, Festivals, Sportevents, Konzerte</p>
+          <ul class="checklist">
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Frühzeitige Anmeldung (3–6 Monate im Voraus)</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Standgebühr: 10–25% des Tagesumsatzes</li>
+            <li><span class="check-box" onclick="toggleCheck(this)"></span>Erhöhte Mengen vorbereiten (+50%)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="49" contenteditable="false">📋 Genehmigungen & Behörden</span></h3>
+        <table class="data-table">
+          <thead><tr><th>Genehmigung</th><th>Behörde</th><th>Kosten (ca.)</th><th>Gültigkeit</th></tr></thead>
+          <tbody>
+            <tr><td>Reisegewerbekarte</td><td>Ordnungsamt</td><td class="price" data-editable="50" contenteditable="false">20–50 €</td><td>Unbefristet</td></tr>
+            <tr><td>Gaststättenerlaubnis (mobil)</td><td>Ordnungsamt</td><td class="price" data-editable="51" contenteditable="false">100–300 €</td><td>Jährlich</td></tr>
+            <tr><td>Lebensmittelhygiene-Zulassung</td><td>Veterinäramt</td><td class="price" data-editable="52" contenteditable="false">50–150 €</td><td>Jährlich</td></tr>
+            <tr><td>Sondernutzungserlaubnis</td><td>Ordnungsamt</td><td class="price" data-editable="53" contenteditable="false">30–100 €/Tag</td><td>Je Standort</td></tr>
+            <tr><td>DGUV Unfallversicherung</td><td>BG Nahrung</td><td class="price" data-editable="54" contenteditable="false">~500 €/Jahr</td><td>Jährlich</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== REZEPTE & SPEISEKARTE ===== -->
+    <div class="page" id="page-recipes">
+      <div class="page-header">
+        <div class="label">Produkte</div>
+        <h2>Rezepte & Speisekarte</h2>
+        <p>Standardisierte Rezepturen für alle Produkte – für gleichbleibende Qualität an jedem Standort.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showTab('rec', 'burgers', this)">🍔 Smash Burger</button>
+        <button class="tab-btn" onclick="showTab('rec', 'baguettes', this)">🥖 Baguettes</button>
+        <button class="tab-btn" onclick="showTab('rec', 'extras', this)">🍟 Beilagen & Getränke</button>
+        <button class="tab-btn" onclick="showTab('rec', 'prices', this)">💶 Preisliste</button>
+      </div>
+
+      <div class="tab-content active" id="rec-tab-burgers">
+        <div class="grid-2">
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="55" contenteditable="false">Classic Smash Burger</span></h3>
+              <span class="badge badge-gold" data-editable="56" contenteditable="false">8,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Der Klassiker – saftig, einfach, unwiderstehlich. Doppel-Patty auf Wunsch für +3,00 €.</p>
+              <h4 style="color:var(--gold);margin-bottom:8px;">Zutaten (1 Portion)</h4>
+              <ul class="ingredient-list">
+                <li><span>Rinderhack-Patty (120g)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Brioche Bun (geröstet)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Zwiebel (roh)</span><span class="qty">20g</span></li>
+                <li><span>Burger-Sauce (Haus)</span><span class="qty">25ml</span></li>
+                <li><span>Senf / Ketchup</span><span class="qty">nach Wunsch</span></li>
+              </ul>
+              <h4 style="color:var(--gold);margin:12px 0 8px;">Zubereitung</h4>
+              <ol class="steps">
+                <li>Patty aus Kühlung nehmen, auf 200°C Grillplatte smashen</li>
+                <li>2 Min. pro Seite grillen bis Kerntemperatur 72°C</li>
+                <li>Bun toasten (30 Sek.)</li>
+                <li>Aufbauen: Bun unten → Sauce → Patty → Zwiebel → Bun oben</li>
+              </ol>
+            </div>
+          </div>
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="57" contenteditable="false">Cheeseburger</span></h3>
+              <span class="badge badge-gold" data-editable="58" contenteditable="false">9,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Wie der Classic, aber mit geschmolzenem Cheddar – der Bestseller.</p>
+              <h4 style="color:var(--gold);margin-bottom:8px;">Zusätzliche Zutaten</h4>
+              <ul class="ingredient-list">
+                <li><span>Cheddar-Scheibe</span><span class="qty">2 Stk.</span></li>
+                <li><span>Alle Classic-Zutaten</span><span class="qty">wie oben</span></li>
+              </ul>
+              <h4 style="color:var(--gold);margin:12px 0 8px;">Besonderheit</h4>
+              <ol class="steps">
+                <li>Käse in den letzten 30 Sek. auf dem Patty schmelzen lassen</li>
+                <li>Deckel über Patty legen um Schmelzprozess zu beschleunigen</li>
+              </ol>
+            </div>
+          </div>
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="59" contenteditable="false">Bacon Cheese Burger</span></h3>
+              <span class="badge badge-gold" data-editable="60" contenteditable="false">9,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Premium-Variante mit knusprigem Speck und doppeltem Käse.</p>
+              <h4 style="color:var(--gold);margin-bottom:8px;">Zusätzliche Zutaten</h4>
+              <ul class="ingredient-list">
+                <li><span>Bacon-Streifen (knusprig)</span><span class="qty">3 Stk.</span></li>
+                <li><span>Cheddar-Scheibe</span><span class="qty">2 Stk.</span></li>
+                <li><span>BBQ-Sauce</span><span class="qty">20ml</span></li>
+              </ul>
+              <h4 style="color:var(--gold);margin:12px 0 8px;">Zubereitung</h4>
+              <ol class="steps">
+                <li>Bacon auf Grillplatte knusprig braten (3–4 Min.)</li>
+                <li>Patty grillen, Käse schmelzen</li>
+                <li>Aufbauen: Bun → BBQ-Sauce → Patty+Käse → Bacon → Bun</li>
+              </ol>
+            </div>
+          </div>
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="61" contenteditable="false">Caramelized Onion Burger</span></h3>
+              <span class="badge badge-gold" data-editable="62" contenteditable="false">9,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Süßlich-würzige Röstzwiebeln treffen auf saftiges Rindfleisch.</p>
+              <h4 style="color:var(--gold);margin-bottom:8px;">Zusätzliche Zutaten</h4>
+              <ul class="ingredient-list">
+                <li><span>Zwiebeln (karamellisiert)</span><span class="qty">60g</span></li>
+                <li><span>Cheddar-Scheibe</span><span class="qty">1 Stk.</span></li>
+                <li><span>Dijon-Senf</span><span class="qty">15ml</span></li>
+              </ul>
+              <h4 style="color:var(--gold);margin:12px 0 8px;">Vorbereitung Zwiebeln</h4>
+              <ol class="steps">
+                <li>Zwiebeln in Ringe schneiden, in Butter bei 140°C karamellisieren (20 Min.)</li>
+                <li>Mit Prise Zucker und Salz würzen</li>
+                <li>Portionsweise vorhalten – täglich frisch zubereiten</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-gold" style="background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.25);color:var(--gold);padding:14px 18px;border-radius:6px;margin-top:16px;">
+          <strong>Doppel-Patty:</strong> Alle Burger sind als Doppel-Patty erhältlich. Aufschlag: +3,00 €. Zweites Patty identisch zubereiten und direkt auf das erste legen.
+        </div>
+      </div>
+
+      <div class="tab-content" id="rec-tab-baguettes">
+        <div class="grid-2">
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="63" contenteditable="false">Hack & Cheese Baguette</span></h3>
+              <span class="badge badge-gold" data-editable="64" contenteditable="false">8,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Würziges Rinderhack mit geschmolzenem Käse im knusprigen Baguette.</p>
+              <ul class="ingredient-list">
+                <li><span>Baguette (25cm, aufgebacken)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Rinderhack (gewürzt)</span><span class="qty">150g</span></li>
+                <li><span>Cheddar geschmolzen</span><span class="qty">40g</span></li>
+                <li><span>Ketchup / Senf</span><span class="qty">nach Wunsch</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="65" contenteditable="false">Steak Baguette</span></h3>
+              <span class="badge badge-gold" data-editable="66" contenteditable="false">12,50 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Premium-Baguette mit zartem Rindersteak, Röstzwiebeln und Pfeffersauce.</p>
+              <ul class="ingredient-list">
+                <li><span>Baguette (25cm)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Rindersteak (dünn, 200g)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Röstzwiebeln</span><span class="qty">50g</span></li>
+                <li><span>Pfeffersauce</span><span class="qty">30ml</span></li>
+                <li><span>Parmesan (gehobelt)</span><span class="qty">15g</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="67" contenteditable="false">Gambas Baguette</span></h3>
+              <span class="badge badge-gold" data-editable="68" contenteditable="false">10,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Mediterrane Garnelen mit Knoblauch-Aioli und frischem Gemüse.</p>
+              <ul class="ingredient-list">
+                <li><span>Baguette (25cm)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Gambas (Garnelen, 6 Stk.)</span><span class="qty">120g</span></li>
+                <li><span>Knoblauch-Aioli</span><span class="qty">30ml</span></li>
+                <li><span>Rucola</span><span class="qty">25g</span></li>
+                <li><span>Zitronenscheibe</span><span class="qty">1 Stk.</span></li>
+                <li><span>Paprika (gegrillt)</span><span class="qty">30g</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="recipe-card">
+            <div class="recipe-header">
+              <h3><span data-editable="69" contenteditable="false">Veggie Mediterranean</span></h3>
+              <span class="badge badge-gold" data-editable="70" contenteditable="false">9,90 €</span>
+            </div>
+            <div class="recipe-body">
+              <p>Gegrilltes Gemüse mit Feta und Hummus – frisch und leicht.</p>
+              <ul class="ingredient-list">
+                <li><span>Baguette (25cm)</span><span class="qty">1 Stk.</span></li>
+                <li><span>Zucchini (gegrillt)</span><span class="qty">50g</span></li>
+                <li><span>Paprika (gegrillt)</span><span class="qty">50g</span></li>
+                <li><span>Feta-Käse</span><span class="qty">40g</span></li>
+                <li><span>Hummus</span><span class="qty">30ml</span></li>
+                <li><span>Rucola / Spinat</span><span class="qty">30g</span></li>
+                <li><span>Oliven (schwarz)</span><span class="qty">15g</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="rec-tab-extras">
+        <div class="grid-2">
+          <div class="card">
+            <h3><span data-editable="71" contenteditable="false">🍟 Beilagen</span></h3>
+            <table class="data-table" style="margin-top:8px;">
+              <thead><tr><th>Produkt</th><th>Beschreibung</th><th>Preis</th></tr></thead>
+              <tbody>
+                <tr><td>Pommes Frites</td><td>Knusprig frittiert, gesalzen</td><td class="price" data-editable="72" contenteditable="false">4,50 €</td></tr>
+                <tr><td>Sauce (Wahl)</td><td>Ketchup, Mayo, BBQ, Aioli, Chili</td><td class="price" data-editable="73" contenteditable="false">1,50 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3><span data-editable="74" contenteditable="false">🥤 Getränke</span></h3>
+            <table class="data-table" style="margin-top:8px;">
+              <thead><tr><th>Getränk</th><th>Größe</th><th>Preis</th></tr></thead>
+              <tbody>
+                <tr><td>Cola</td><td>0,5l Flasche</td><td class="price" data-editable="75" contenteditable="false">2,50 €</td></tr>
+                <tr><td>Fanta</td><td>0,5l Flasche</td><td class="price" data-editable="76" contenteditable="false">2,50 €</td></tr>
+                <tr><td>Sprite</td><td>0,5l Flasche</td><td class="price" data-editable="77" contenteditable="false">2,50 €</td></tr>
+                <tr><td>Eistee Lemon</td><td>0,5l Flasche</td><td class="price" data-editable="78" contenteditable="false">2,50 €</td></tr>
+                <tr><td>Eistee Pfirsich</td><td>0,5l Flasche</td><td class="price" data-editable="79" contenteditable="false">2,50 €</td></tr>
+                <tr><td>Wasser Still</td><td>0,5l Flasche</td><td class="price" data-editable="80" contenteditable="false">2,00 €</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="rec-tab-prices">
+        <div class="card">
+          <h3><span data-editable="81" contenteditable="false">💶 Vollständige Preisliste</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>Produkt</th><th>Kategorie</th><th>Preis</th><th>Doppel-Patty</th></tr></thead>
+            <tbody>
+              <tr><td>Classic Smash Burger</td><td><span class="badge badge-gold" data-editable="82" contenteditable="false">Burger</span></td><td class="price" data-editable="83" contenteditable="false">8,90 €</td><td class="price" data-editable="84" contenteditable="false">11,90 €</td></tr>
+              <tr><td>Cheeseburger</td><td><span class="badge badge-gold" data-editable="85" contenteditable="false">Burger</span></td><td class="price" data-editable="86" contenteditable="false">9,90 €</td><td class="price" data-editable="87" contenteditable="false">12,90 €</td></tr>
+              <tr><td>Bacon Cheese Burger</td><td><span class="badge badge-gold" data-editable="88" contenteditable="false">Burger</span></td><td class="price" data-editable="89" contenteditable="false">10,90 €</td><td class="price" data-editable="90" contenteditable="false">13,90 €</td></tr>
+              <tr><td>Caramelized Onion Burger</td><td><span class="badge badge-gold" data-editable="91" contenteditable="false">Burger</span></td><td class="price" data-editable="92" contenteditable="false">9,90 €</td><td class="price" data-editable="93" contenteditable="false">12,50 €</td></tr>
+              <tr><td>Hack &amp; Cheese Baguette</td><td><span class="badge badge-green">Baguette</span></td><td class="price" data-editable="94" contenteditable="false">9,90 €</td><td>–</td></tr>
+              <tr><td>Steak Baguette</td><td><span class="badge badge-green">Baguette</span></td><td class="price" data-editable="95" contenteditable="false">12,50 €</td><td>–</td></tr>
+              <tr><td>Philly Cheese Baguette</td><td><span class="badge badge-green">Baguette</span></td><td class="price" data-editable="96" contenteditable="false">13,90 €</td><td>–</td></tr>
+              <tr><td>Veggie Mediterranean</td><td><span class="badge badge-green">Baguette</span></td><td class="price" data-editable="97" contenteditable="false">9,90 €</td><td>–</td></tr>
+              <tr><td>Pommes Frites</td><td><span class="badge badge-red">Beilage</span></td><td class="price" data-editable="98" contenteditable="false">4,50 €</td><td>–</td></tr>
+              <tr><td>Sauce (Wahl)</td><td><span class="badge badge-red">Beilage</span></td><td class="price" data-editable="99" contenteditable="false">1,50 €</td><td>–</td></tr>
+              <tr><td>Softdrinks (Cola/Fanta/Sprite/Eistee)</td><td><span class="badge badge-red">Getränk</span></td><td class="price" data-editable="100" contenteditable="false">2,50 €</td><td>–</td></tr>
+              <tr><td>Wasser Still</td><td><span class="badge badge-red">Getränk</span></td><td class="price" data-editable="101" contenteditable="false">2,00 €</td><td>–</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== QUALITÄTSSTANDARDS ===== -->
+    <div class="page" id="page-quality">
+      <div class="page-header">
+        <div class="label">Qualität</div>
+        <h2>Qualitätsstandards</h2>
+        <p>Verbindliche Standards für Zutaten, Portionsgrößen und Produktpräsentation.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3><span data-editable="102" contenteditable="false">🥩 Fleischqualität</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>Kriterium</th><th>Standard</th></tr></thead>
+            <tbody>
+              <tr><td>Fettgehalt Rinderhack</td><td class="price" data-editable="103" contenteditable="false">20–25% (für Saftigkeit)</td></tr>
+              <tr><td>Patty-Gewicht (roh)</td><td class="price" data-editable="104" contenteditable="false">120g ± 5g</td></tr>
+              <tr><td>Herkunft</td><td class="price" data-editable="105" contenteditable="false">Deutsches Rindfleisch</td></tr>
+              <tr><td>Lieferhäufigkeit</td><td class="price" data-editable="106" contenteditable="false">Täglich / alle 2 Tage</td></tr>
+              <tr><td>Haltbarkeit (gekühlt)</td><td class="price" data-editable="107" contenteditable="false">Max. 2 Tage bei &lt;4°C</td></tr>
+              <tr><td>Garkerntemperatur</td><td class="price" data-editable="108" contenteditable="false">Mind. 72°C</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3><span data-editable="109" contenteditable="false">🍞 Brot & Baguette</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>Kriterium</th><th>Standard</th></tr></thead>
+            <tbody>
+              <tr><td>Brioche Bun Gewicht</td><td class="price" data-editable="110" contenteditable="false">80–90g</td></tr>
+              <tr><td>Baguette Länge</td><td class="price" data-editable="111" contenteditable="false">25cm ± 2cm</td></tr>
+              <tr><td>Röstgrad Bun</td><td class="price" data-editable="112" contenteditable="false">Goldbraun, nicht dunkel</td></tr>
+              <tr><td>Frische</td><td class="price" data-editable="113" contenteditable="false">Täglich frisch geliefert</td></tr>
+              <tr><td>Lagerung</td><td class="price" data-editable="114" contenteditable="false">Trocken, bei Raumtemperatur</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="115" contenteditable="false">🎨 Präsentationsstandards</span></h3>
+        <div class="grid-3" style="margin-top:12px;">
+          <div>
+            <h4>Burger</h4>
+            <ol class="steps">
+              <li>Immer in Papier einwickeln (Branded)</li>
+              <li>Aufrecht in Halter oder Box servieren</li>
+              <li>Pommes separat in Tüte</li>
+              <li>Serviette immer dazu</li>
+            </ol>
+          </div>
+          <div>
+            <h4>Baguette</h4>
+            <ol class="steps">
+              <li>In Pergamentpapier einwickeln</li>
+              <li>Diagonal schneiden (optional)</li>
+              <li>In Tüte mit Logo ausgeben</li>
+              <li>Sauce separat auf Wunsch</li>
+            </ol>
+          </div>
+          <div>
+            <h4>Getränke & Extras</h4>
+            <ol class="steps">
+              <li>Pommes immer frisch und heiß</li>
+              <li>Getränke gekühlt (&lt;8°C)</li>
+              <li>Saucen in Portionsbechern</li>
+              <li>Strohhalm auf Nachfrage</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FINANZEN ===== -->
+    <div class="page" id="page-finance">
+      <div class="page-header">
+        <div class="label">Finanzen</div>
+        <h2>Finanzen & KPIs</h2>
+        <p>Wirtschaftlichkeitsrechnung, Kostenkontrolle und Kennzahlen für den laufenden Betrieb.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="kpi-card">
+          <div class="kpi-value">60.000 €</div>
+          <div class="kpi-label">Ø Monatsumsatz</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">36.880 €</div>
+          <div class="kpi-label">Gesamtkosten / Monat</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">23.120 €</div>
+          <div class="kpi-label">Gewinn vor Steuern</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value">46,2%</div>
+          <div class="kpi-label">Gewinnmarge</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3><span data-editable="116" contenteditable="false">📊 Monatliche Kostenstruktur</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>Position</th><th>Betrag</th><th>Anteil</th></tr></thead>
+            <tbody>
+              <tr><td>Wareneinsatz</td><td class="price" data-editable="117" contenteditable="false">20.000 €</td><td><span class="badge badge-red">33,3%</span></td></tr>
+              <tr><td>Personalkosten</td><td class="price" data-editable="118" contenteditable="false">9.000 €</td><td><span class="badge badge-red">15,0%</span></td></tr>
+              <tr><td>Miete & Nebenkosten</td><td class="price" data-editable="119" contenteditable="false">2.500 €</td><td><span class="badge badge-red">4,2%</span></td></tr>
+              <tr><td>Sonstige Kosten</td><td class="price" data-editable="120" contenteditable="false">7.500 €</td><td><span class="badge badge-red">12,5%</span></td></tr>
+              <tr style="font-weight:600;"><td><strong>Gesamtkosten</strong></td><td class="price"><strong>36.880 €</strong></td><td><span class="badge badge-red">61,5%</span></td></tr>
+              <tr style="font-weight:600;"><td><strong>Gewinn vor Steuern</strong></td><td style="color:var(--green);font-weight:700;">23.120 €</td><td><span class="badge badge-green">38,5%</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3><span data-editable="121" contenteditable="false">🏗️ Investitionsplan (Einmalig)</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>Position</th><th>Betrag</th></tr></thead>
+            <tbody>
+              <tr><td>Verkaufsanhänger VK 523</td><td class="price" data-editable="122" contenteditable="false">25.300 €</td></tr>
+              <tr><td>Küchenausstattung</td><td class="price" data-editable="123" contenteditable="false">22.000 €</td></tr>
+              <tr><td>Branding & Folierung</td><td class="price" data-editable="124" contenteditable="false">8.000 €</td></tr>
+              <tr><td>Lizenzen & Genehmigungen</td><td class="price" data-editable="125" contenteditable="false">7.500 €</td></tr>
+              <tr><td>Betriebskapital Reserve</td><td class="price" data-editable="126" contenteditable="false">2.500 €</td></tr>
+              <tr style="font-weight:600;"><td><strong>Gesamtinvestition</strong></td><td class="price"><strong>62.500 €</strong></td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-success" style="margin-top:16px;">
+            <span class="alert-icon">✅</span>
+            <span>Amortisation bei Ø-Gewinn: <strong>ca. 2 Monate</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="127" contenteditable="false">📈 Szenarien-Analyse</span></h3>
+        <table class="data-table" style="margin-top:8px;">
+          <thead><tr><th>Szenario</th><th>Tagesumsatz</th><th>Monatsumsatz</th><th>Gewinn/Monat</th><th>Marge</th><th>Amortisation</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-red">Konservativ</span></td>
+              <td>1.500 €</td>
+              <td>42.500 €</td>
+              <td class="green">11.430 €</td>
+              <td><span class="badge badge-gold">26,9%</span></td>
+              <td>ca. 6 Monate</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gold" data-editable="128" contenteditable="false">Realistisch</span></td>
+              <td>2.000 €</td>
+              <td>60.000 €</td>
+              <td class="green">23.120 €</td>
+              <td><span class="badge badge-gold" data-editable="129" contenteditable="false">38,5%</span></td>
+              <td>ca. 2 Monate</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">Optimistisch</span></td>
+              <td>2.500 €</td>
+              <td>72.500 €</td>
+              <td class="green">31.430 €</td>
+              <td><span class="badge badge-green">43,4%</span></td>
+              <td>2–3 Monate</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert alert-warning" style="margin-top:16px;">
+          <span class="alert-icon">⚠️</span>
+          <span>Im konservativen Szenario (1.500 €/Tag) werden die Fixkosten nicht vollständig gedeckt. Mindest-Tagesumsatz für Break-Even: <strong>ca. 1.688 €</strong></span>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="130" contenteditable="false">📋 Tägliche Kassenkontrolle</span></h3>
+        <div class="grid-2" style="margin-top:12px;">
+          <div>
+            <h4>Tagesabschluss-Protokoll</h4>
+            <table class="data-table" style="margin-top:8px;">
+              <thead><tr><th>Eintrag</th><th>Wert</th></tr></thead>
+              <tbody>
+                <tr><td>Tagesumsatz Gesamt</td><td>___________ €</td></tr>
+                <tr><td>Bar-Einnahmen</td><td>___________ €</td></tr>
+                <tr><td>Karten-Einnahmen</td><td>___________ €</td></tr>
+                <tr><td>Anzahl Transaktionen</td><td>___________</td></tr>
+                <tr><td>Ø Bon-Wert</td><td>___________ €</td></tr>
+                <tr><td>Wareneinsatz heute</td><td>___________ €</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h4>Monatliche KPI-Ziele</h4>
+            <table class="data-table" style="margin-top:8px;">
+              <thead><tr><th>KPI</th><th>Zielwert</th></tr></thead>
+              <tbody>
+                <tr><td>Ø Tagesumsatz</td><td class="price" data-editable="131" contenteditable="false">≥ 2.000 €</td></tr>
+                <tr><td>Wareneinsatz-Quote</td><td class="price" data-editable="132" contenteditable="false">≤ 33,3%</td></tr>
+                <tr><td>Personalkosten-Quote</td><td class="price" data-editable="133" contenteditable="false">≤ 15,0%</td></tr>
+                <tr><td>Ø Bon-Wert</td><td class="price" data-editable="134" contenteditable="false">≥ 9,90 €</td></tr>
+                <tr><td>Gewinnmarge</td><td class="price" data-editable="135" contenteditable="false">≥ 23%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== TEAM & SCHULUNG ===== -->
+    <div class="page" id="page-team">
+      <div class="page-header">
+        <div class="label">Team</div>
+        <h2>Team & Schulung</h2>
+        <p>Onboarding, Servicestandards und Schulungsunterlagen für alle Mitarbeiter.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3><span data-editable="136" contenteditable="false">👋 Onboarding – Neue Mitarbeiter</span></h3>
+          <div class="timeline">
+            <div class="timeline-item">
+              <h4>Tag 1 – Einführung</h4>
+              <p>Betriebsführung, Sicherheitsunterweisung, Hygienebelehrung (§43 IfSG), Kennenlernen der Produkte</p>
+            </div>
+            <div class="timeline-item">
+              <h4>Tag 2–3 – Produktion</h4>
+              <p>Rezepte kennenlernen, Grillschulung, Mise en Place, Qualitätsstandards</p>
+            </div>
+            <div class="timeline-item">
+              <h4>Tag 4–5 – Service</h4>
+              <p>Kassentraining, Kundenkommunikation, Beschwerdemanagement, Upselling</p>
+            </div>
+            <div class="timeline-item">
+              <h4>Woche 2 – Selbstständig</h4>
+              <p>Eigenständiger Betrieb unter Aufsicht, Feedback-Gespräch am Ende der Woche</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3><span data-editable="137" contenteditable="false">💬 Servicestandards</span></h3>
+          <h4 style="margin-bottom:10px;">Begrüßung & Bestellung</h4>
+          <ol class="steps">
+            <li>Kunden freundlich begrüßen: "Guten Tag, was darf es sein?"</li>
+            <li>Bestellung wiederholen zur Bestätigung</li>
+            <li>Wartezeit kommunizieren: "Das dauert ca. 3–4 Minuten"</li>
+            <li>Upselling: "Möchten Sie Pommes dazu?" oder "Als Doppel-Patty?"</li>
+          </ol>
+          <h4 style="margin-bottom:10px;margin-top:16px;">Beschwerdemanagement</h4>
+          <ol class="steps">
+            <li>Zuhören ohne zu unterbrechen</li>
+            <li>Entschuldigen und Verständnis zeigen</li>
+            <li>Sofort Lösung anbieten (Ersatz oder Rückerstattung)</li>
+            <li>Vorfall im Tagesprotokoll notieren</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="138" contenteditable="false">📅 Schichtplan-Vorlage</span></h3>
+        <table class="data-table" style="margin-top:8px;">
+          <thead><tr><th>Schicht</th><th>Zeit</th><th>Mitarbeiter</th><th>Aufgaben</th></tr></thead>
+          <tbody>
+            <tr><td>Vorbereitung</td><td>09:00–11:00</td><td>1 Person</td><td>Anfahrt, Aufbau, Mise en Place – <strong>kein Verkauf</strong></td></tr>
+            <tr><td>Mittagsschicht</td><td>11:00–15:00</td><td>2 Personen</td><td>Verkaufsstart 11:00 Uhr, Hauptservice, Kassierung, Produktion</td></tr>
+            <tr><td>Abendschicht</td><td>14:30–21:00</td><td>1–2 Personen</td><td>Abendservice, Abbau, Reinigung</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== TECHNIK & WARTUNG ===== -->
+    <div class="page" id="page-tech">
+      <div class="page-header">
+        <div class="label">Technik</div>
+        <h2>Technik & Wartung</h2>
+        <p>Technische Spezifikationen des Anhängers und Wartungsplan für alle Geräte.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3><span data-editable="139" contenteditable="false">🚛 Anhänger-Spezifikationen</span></h3>
+          <h4 style="margin-bottom:8px;">VK 523 230 AERO RETRO</h4>
+          <table class="data-table">
+            <tbody>
+              <tr><td>Abmessungen</td><td class="price" data-editable="140" contenteditable="false">520 × 230 × 230 cm</td></tr>
+              <tr><td>Gesamtgewicht</td><td class="price" data-editable="141" contenteditable="false">2.700 kg (gebremst)</td></tr>
+              <tr><td>Fahrgestell</td><td class="price" data-editable="142" contenteditable="false">Tandem niederflur</td></tr>
+              <tr><td>Höchstgeschwindigkeit</td><td class="price" data-editable="143" contenteditable="false">80 km/h</td></tr>
+              <tr><td>Aufbau</td><td class="price" data-editable="144" contenteditable="false">Sandwich Polyester 30mm</td></tr>
+              <tr><td>Verkaufsklappen</td><td class="price" data-editable="145" contenteditable="false">2 rechts + 1 Heckklappe</td></tr>
+              <tr><td>Stromversorgung</td><td class="price" data-editable="146" contenteditable="false">230V, FI-Schutz</td></tr>
+              <tr><td>Stützen</td><td class="price" data-editable="147" contenteditable="false">4 Stück + Stützrad</td></tr>
+              <tr><td>Rangiergriffe</td><td class="price" data-editable="148" contenteditable="false">4 Stück</td></tr>
+              <tr><td>Bodenbelag</td><td class="price" data-editable="149" contenteditable="false">PVC</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <h3><span data-editable="150" contenteditable="false">🔧 Wartungsplan</span></h3>
+          <table class="data-table" style="margin-top:8px;">
+            <thead><tr><th>Gerät / Bereich</th><th>Intervall</th><th>Maßnahme</th></tr></thead>
+            <tbody>
+              <tr><td>Grillplatte</td><td>Täglich</td><td>Reinigen, Öl prüfen</td></tr>
+              <tr><td>Friteuse</td><td>Täglich</td><td>Öl wechseln nach 8h</td></tr>
+              <tr><td>Kühlgeräte</td><td>Wöchentlich</td><td>Dichtungen prüfen</td></tr>
+              <tr><td>Stromkabel</td><td>Monatlich</td><td>Auf Beschädigungen prüfen</td></tr>
+              <tr><td>Stützen & Räder</td><td>Monatlich</td><td>Schmieren, Reifendruck</td></tr>
+              <tr><td>Verkaufsklappen</td><td>Monatlich</td><td>Scharniere ölen</td></tr>
+              <tr><td>Anhänger-TÜV</td><td>Jährlich</td><td>Hauptuntersuchung</td></tr>
+              <tr><td>Elektroprüfung</td><td>Jährlich</td><td>E-Check durch Fachmann</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3><span data-editable="151" contenteditable="false">🆘 Notfallkontakte</span></h3>
+        <table class="data-table" style="margin-top:8px;">
+          <thead><tr><th>Kontakt</th><th>Telefon</th><th>Wann</th></tr></thead>
+          <tbody>
+            <tr><td>Pannendienst / ADAC</td><td class="price" data-editable="152" contenteditable="false">0800 5 10 11 12</td><td>Panne, Reifenschaden</td></tr>
+            <tr><td>Elektriker (Notfall)</td><td class="price" data-editable="153" contenteditable="false">_____________</td><td>Stromausfall, Kurzschluss</td></tr>
+            <tr><td>Gesundheitsamt</td><td class="price" data-editable="154" contenteditable="false">_____________</td><td>Lebensmittelzwischenfall</td></tr>
+            <tr><td>Trailershop Service</td><td class="price" data-editable="155" contenteditable="false">_____________</td><td>Anhänger-Defekt</td></tr>
+            <tr><td>Inhaber</td><td class="price" data-editable="156" contenteditable="false">_____________</td><td>Alle sonstigen Notfälle</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ===== KOSTENKALKULATION ===== -->
+    <div class="page" id="page-costing">
+      <div class="page-header">
+        <div class="label">Kostenkalkulation</div>
+        <h2>Vollkostenkalkulation pro Produkt</h2>
+        <p>Detaillierte Aufschlüsselung der Warenkosten und anteiligen Fixkosten (Personal, Miete, Strom, Wasser, Versicherung etc.) pro verkaufter Einheit.</p>
+        <div class="gold-divider"></div>
+      </div>
+
+      <div class="card" style="margin-bottom:24px;background:rgba(201,168,76,0.08);border:1px solid rgba(201,168,76,0.3);">
+        <h3 style="color:var(--gold);margin-bottom:12px;">📊 Grundlage der Kalkulation</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:16px;">
+          <div style="text-align:center;padding:12px;background:var(--bg-darker);border-radius:8px;"><div style="font-size:22px;font-weight:700;color:var(--gold);">16.900 €</div><div style="font-size:12px;color:var(--text-muted);">Fixkosten / Monat</div></div>
+          <div style="text-align:center;padding:12px;background:var(--bg-darker);border-radius:8px;"><div style="font-size:22px;font-weight:700;color:var(--gold);">5.000</div><div style="font-size:12px;color:var(--text-muted);">Einheiten / Monat</div></div>
+          <div style="text-align:center;padding:12px;background:var(--bg-darker);border-radius:8px;"><div style="font-size:22px;font-weight:700;color:var(--gold);">3,38 €</div><div style="font-size:12px;color:var(--text-muted);">Fixkosten / Einheit</div></div>
+          <div style="text-align:center;padding:12px;background:var(--bg-darker);border-radius:8px;"><div style="font-size:22px;font-weight:700;color:var(--gold);">120g</div><div style="font-size:12px;color:var(--text-muted);">Patty-Gewicht (roh)</div></div>
+        </div>
+        <table class="data-table">
+          <thead><tr><th>Fixkostenposition</th><th>Monat</th><th>Anteil</th></tr></thead>
+          <tbody>
+            <tr><td>👥 Personal</td><td class="price" data-editable="157" contenteditable="false">9.000 €</td><td class="price" data-editable="158" contenteditable="false">53,3 %</td></tr>
+            <tr><td>📍 Miete &amp; Standgebühren</td><td class="price" data-editable="159" contenteditable="false">2.500 €</td><td class="price" data-editable="160" contenteditable="false">14,8 %</td></tr>
+            <tr><td>🏷️ Franchise-Gebühr</td><td class="price" data-editable="161" contenteditable="false">1.500 €</td><td class="price" data-editable="162" contenteditable="false">8,9 %</td></tr>
+            <tr><td>⚡ Strom (Generator/Anschluss)</td><td class="price" data-editable="163" contenteditable="false">800 €</td><td class="price" data-editable="164" contenteditable="false">4,7 %</td></tr>
+            <tr><td>💧 Wasser &amp; Entsorgung</td><td class="price" data-editable="165" contenteditable="false">150 €</td><td class="price" data-editable="166" contenteditable="false">0,9 %</td></tr>
+            <tr><td>🛡️ Versicherung (KFZ, Haftpflicht)</td><td class="price" data-editable="167" contenteditable="false">300 €</td><td class="price" data-editable="168" contenteditable="false">1,8 %</td></tr>
+            <tr><td>🔧 Wartung &amp; Reparaturen</td><td class="price" data-editable="169" contenteditable="false">200 €</td><td class="price" data-editable="170" contenteditable="false">1,2 %</td></tr>
+            <tr><td>📦 Verbrauchsmaterial &amp; Verpackung</td><td class="price" data-editable="171" contenteditable="false">800 €</td><td class="price" data-editable="172" contenteditable="false">4,7 %</td></tr>
+            <tr><td>📣 Marketing &amp; Werbung</td><td class="price" data-editable="173" contenteditable="false">500 €</td><td class="price" data-editable="174" contenteditable="false">3,0 %</td></tr>
+            <tr><td>📋 Buchhaltung &amp; Verwaltung</td><td class="price" data-editable="175" contenteditable="false">300 €</td><td class="price" data-editable="176" contenteditable="false">1,8 %</td></tr>
+            <tr><td>🔄 Diverses / Puffer</td><td class="price" data-editable="177" contenteditable="false">850 €</td><td class="price" data-editable="178" contenteditable="false">5,0 %</td></tr>
+            <tr style="background:rgba(201,168,76,0.1);font-weight:700;"><td>Σ Gesamt Fixkosten</td><td class="price" style="color:var(--gold);">16.900 €</td><td class="price" style="color:var(--gold);">100 %</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="showTab('costing', 'burger', this)">🍔 Smash Burger</button>
+        <button class="tab-btn" onclick="showTab('costing', 'baguette', this)">🥖 Baguettes</button>
+        <button class="tab-btn" onclick="showTab('costing', 'sides', this)">🍟 Beilagen &amp; Getränke</button>
+        <button class="tab-btn" onclick="showTab('costing', 'summary', this)">📊 Übersicht</button>
+      </div>
+
+      <div class="tab-content active" id="costing-tab-burger">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">Classic Smash Burger</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="179" contenteditable="false">8,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Rinderhack-Patty 80/20</td><td>120g</td><td class="price" data-editable="180" contenteditable="false">0,95 €</td></tr>
+<tr><td>Potato Bun (geröstet)</td><td>1 Stk.</td><td class="price" data-editable="181" contenteditable="false">0,45 €</td></tr>
+<tr><td>Burger-Sauce</td><td>30ml</td><td class="price" data-editable="182" contenteditable="false">0,30 €</td></tr>
+<tr><td>Verpackung (Papier)</td><td>1 Stk.</td><td class="price" data-editable="183" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">1,85 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">5,23 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+3,67 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (41,2%)</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">Cheeseburger</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="184" contenteditable="false">9,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Rinderhack-Patty 80/20</td><td>120g</td><td class="price" data-editable="185" contenteditable="false">0,95 €</td></tr>
+<tr><td>Potato Bun (geröstet)</td><td>1 Stk.</td><td class="price" data-editable="186" contenteditable="false">0,45 €</td></tr>
+<tr><td>Cheddar-Scheibe</td><td>1 Stk.</td><td class="price" data-editable="187" contenteditable="false">0,25 €</td></tr>
+<tr><td>Burger-Sauce</td><td>30ml</td><td class="price" data-editable="188" contenteditable="false">0,15 €</td></tr>
+<tr><td>Verpackung (Papier)</td><td>1 Stk.</td><td class="price" data-editable="189" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">1,95 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">5,33 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+4,57 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (46,2%)</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">Bacon Cheese Burger</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="190" contenteditable="false">10,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Rinderhack-Patty 80/20</td><td>120g</td><td class="price" data-editable="191" contenteditable="false">0,95 €</td></tr>
+<tr><td>Potato Bun (geröstet)</td><td>1 Stk.</td><td class="price" data-editable="192" contenteditable="false">0,45 €</td></tr>
+<tr><td>Cheddar-Scheibe</td><td>1 Stk.</td><td class="price" data-editable="193" contenteditable="false">0,25 €</td></tr>
+<tr><td>Bacon (Streifen)</td><td>30g</td><td class="price" data-editable="194" contenteditable="false">0,80 €</td></tr>
+<tr><td>Burger-Sauce</td><td>30ml</td><td class="price" data-editable="195" contenteditable="false">0,30 €</td></tr>
+<tr><td>Verpackung (Papier)</td><td>1 Stk.</td><td class="price" data-editable="196" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">2,90 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">6,28 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+4,62 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (42,4%)</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">Caramelized Onion Burger</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="197" contenteditable="false">9,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Rinderhack-Patty 80/20</td><td>120g</td><td class="price" data-editable="198" contenteditable="false">0,95 €</td></tr>
+<tr><td>Potato Bun (geröstet)</td><td>1 Stk.</td><td class="price" data-editable="199" contenteditable="false">0,45 €</td></tr>
+<tr><td>Cheddar-Scheibe</td><td>1 Stk.</td><td class="price" data-editable="200" contenteditable="false">0,25 €</td></tr>
+<tr><td>Karamellisierte Zwiebeln</td><td>50g</td><td class="price" data-editable="201" contenteditable="false">0,15 €</td></tr>
+<tr><td>Burger-Sauce</td><td>30ml</td><td class="price" data-editable="202" contenteditable="false">0,30 €</td></tr>
+<tr><td>Verpackung (Papier)</td><td>1 Stk.</td><td class="price" data-editable="203" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">2,25 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">5,63 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+4,27 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (43,1%)</div>
+  </div>
+</div>
+
+  </div>
+</div>
+<div class="tab-content" id="costing-tab-baguette">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">Hack &amp; Cheese Baguette</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="204" contenteditable="false">9,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Baguette-Brot</td><td>250g</td><td class="price" data-editable="205" contenteditable="false">0,55 €</td></tr>
+<tr><td>Rinderhack (gebraten)</td><td>150g</td><td class="price" data-editable="206" contenteditable="false">1,20 €</td></tr>
+<tr><td>Cheddar-Scheibe</td><td>1 Stk.</td><td class="price" data-editable="207" contenteditable="false">0,25 €</td></tr>
+<tr><td>Sauce</td><td>30ml</td><td class="price" data-editable="208" contenteditable="false">0,30 €</td></tr>
+<tr><td>Verpackung</td><td>1 Stk.</td><td class="price" data-editable="209" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">2,45 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">5,83 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+4,07 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (41,1%)</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">⭐ Steak Baguette</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="210" contenteditable="false">12,50 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Baguette-Brot</td><td>250g</td><td class="price" data-editable="211" contenteditable="false">0,55 €</td></tr>
+<tr><td>Rindersteak (Hüfte)</td><td>120g</td><td class="price" data-editable="212" contenteditable="false">2,50 €</td></tr>
+<tr><td>Röstzwiebeln</td><td>50g</td><td class="price" data-editable="213" contenteditable="false">0,30 €</td></tr>
+<tr><td>Pfeffersauce</td><td>40ml</td><td class="price" data-editable="214" contenteditable="false">0,30 €</td></tr>
+<tr><td>Verpackung</td><td>1 Stk.</td><td class="price" data-editable="215" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">3,80 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">7,18 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+5,32 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (42,6%)</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">🏆 Philly Cheese Baguette</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="216" contenteditable="false">13,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Baguette-Brot</td><td>250g</td><td class="price" data-editable="217" contenteditable="false">0,55 €</td></tr>
+<tr><td>Rindersteak-Streifen</td><td>120g</td><td class="price" data-editable="218" contenteditable="false">2,80 €</td></tr>
+<tr><td>Provolone-Käse</td><td>40g</td><td class="price" data-editable="219" contenteditable="false">0,25 €</td></tr>
+<tr><td>Paprika + Zwiebeln</td><td>60g</td><td class="price" data-editable="220" contenteditable="false">0,20 €</td></tr>
+<tr><td>Pfeffersauce</td><td>30ml</td><td class="price" data-editable="221" contenteditable="false">0,30 €</td></tr>
+<tr><td>Verpackung</td><td>1 Stk.</td><td class="price" data-editable="222" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">4,25 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">7,63 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+6,27 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (45,1%)</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+    <h3 style="margin:0;">🌟 Veggie Mediterranean</h3>
+    <span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;" data-editable="223" contenteditable="false">9,90 €</span>
+  </div>
+  <table class="data-table" style="margin-bottom:12px;">
+    <thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead>
+    <tbody>
+<tr><td>Baguette-Brot</td><td>250g</td><td class="price" data-editable="224" contenteditable="false">0,55 €</td></tr>
+<tr><td>Gegrilltes Gemüse + Feta</td><td>120g</td><td class="price" data-editable="225" contenteditable="false">0,90 €</td></tr>
+<tr><td>Hummus</td><td>40g</td><td class="price" data-editable="226" contenteditable="false">0,50 €</td></tr>
+<tr><td>Verpackung</td><td>1 Stk.</td><td class="price" data-editable="227" contenteditable="false">0,15 €</td></tr>
+<tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">2,10 €</td></tr>
+<tr><td colspan="2">Fixkosten-Anteil</td><td class="price">3,38 €</td></tr>
+<tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td colspan="2">Σ Vollkosten</td><td class="price" style="color:var(--gold);">5,48 €</td></tr>
+    </tbody>
+  </table>
+  <div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:20px;font-weight:700;color:#4ade80;">+4,42 €</div>
+    <div style="font-size:12px;color:var(--text-muted);">Reingewinn (44,6%)</div>
+  </div>
+</div>
+
+  </div>
+</div>
+<div class="tab-content" id="costing-tab-sides">
+        <div class="alert alert-info" style="margin-bottom:20px;"><span class="alert-icon">ℹ️</span><span><strong>Hinweis:</strong> Beilagen &amp; Getränke sind Gewinn-Booster. Fixkosten werden durch Hauptprodukte gedeckt. Immer aktiv anbieten!</span></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;">
+          <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;">Pommes Frites</h3><span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;"><span data-editable="228" contenteditable="false">4,50 €</span></span></div><table class="data-table" style="margin-bottom:12px;"><thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead><tbody><tr><td>TK-Pommes</td><td>200g</td><td class="price" data-editable="229" contenteditable="false">0,55 €</td></tr><tr><td>Frittierfett (anteilig)</td><td>–</td><td class="price" data-editable="230" contenteditable="false">0,12 €</td></tr><tr><td>Salz &amp; Gewürze</td><td>–</td><td class="price" data-editable="231" contenteditable="false">0,05 €</td></tr><tr><td>Verpackung</td><td>1 Stk.</td><td class="price" data-editable="232" contenteditable="false">0,15 €</td></tr><tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">0,87 €</td></tr></tbody></table><div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#4ade80;">+3,63 €</div><div style="font-size:12px;color:var(--text-muted);">Deckungsbeitrag (80,7%)</div></div></div>
+          <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;">Sauce (Dip)</h3><span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;"><span data-editable="233" contenteditable="false">1,50 €</span></span></div><table class="data-table" style="margin-bottom:12px;"><thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead><tbody><tr><td>Sauce (Großhandel)</td><td>50ml</td><td class="price" data-editable="234" contenteditable="false">0,18 €</td></tr><tr><td>Becher + Deckel</td><td>1 Stk.</td><td class="price" data-editable="235" contenteditable="false">0,08 €</td></tr><tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">0,26 €</td></tr></tbody></table><div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#4ade80;">+1,24 €</div><div style="font-size:12px;color:var(--text-muted);">Deckungsbeitrag (82,7%)</div></div></div>
+          <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;">Softdrink 0,33l</h3><span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;"><span data-editable="236" contenteditable="false">2,50 €</span></span></div><table class="data-table" style="margin-bottom:12px;"><thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead><tbody><tr><td>Dose/Flasche (EK)</td><td>0,33l</td><td class="price" data-editable="237" contenteditable="false">0,55 €</td></tr><tr><td>Serviette</td><td>1 Stk.</td><td class="price" data-editable="238" contenteditable="false">0,02 €</td></tr><tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">0,57 €</td></tr></tbody></table><div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#4ade80;">+1,93 €</div><div style="font-size:12px;color:var(--text-muted);">Deckungsbeitrag (77,2%)</div></div></div>
+          <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;"><h3 style="margin:0;">Wasser still 0,5l</h3><span style="background:var(--gold);color:var(--bg-dark);padding:4px 12px;border-radius:20px;font-weight:700;font-size:14px;"><span data-editable="239" contenteditable="false">2,00 €</span></span></div><table class="data-table" style="margin-bottom:12px;"><thead><tr><th>Zutat</th><th>Menge</th><th>Kosten</th></tr></thead><tbody><tr><td>Flasche (EK)</td><td>0,5l</td><td class="price" data-editable="240" contenteditable="false">0,35 €</td></tr><tr><td>Serviette</td><td>1 Stk.</td><td class="price" data-editable="241" contenteditable="false">0,02 €</td></tr><tr style="font-weight:600;"><td colspan="2">Σ Warenkosten</td><td class="price" style="color:var(--gold);">0,37 €</td></tr></tbody></table><div style="background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:8px;padding:12px;text-align:center;"><div style="font-size:20px;font-weight:700;color:#4ade80;">+1,63 €</div><div style="font-size:12px;color:var(--text-muted);">Deckungsbeitrag (81,5%)</div></div></div>
+        </div>
+      </div>
+      <div class="tab-content" id="costing-tab-summary">
+        <h3>Produktvergleich – Vollkostenkalkulation</h3>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Produkt</th>
+              <th>VK-Preis</th>
+              <th>Warenkosten</th>
+              <th>Fixkosten</th>
+              <th>Vollkosten</th>
+              <th>Reingewinn</th>
+              <th>Marge</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Classic Smash Burger</td>
+              <td class="price">8,90 €</td>
+              <td class="price">1,85 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">5,23 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">3,67 €</td>
+              <td class="price">41,2 %</td>
+            </tr>
+            <tr>
+              <td>Cheeseburger</td>
+              <td class="price">9,90 €</td>
+              <td class="price">1,95 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">5,33 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">4,57 €</td>
+              <td class="price">46,2 %</td>
+            </tr>
+            <tr>
+              <td>Bacon Cheese Burger</td>
+              <td class="price">10,90 €</td>
+              <td class="price">2,90 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">6,28 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">4,62 €</td>
+              <td class="price">42,4 %</td>
+            </tr>
+            <tr>
+              <td>Caramelized Onion Burger</td>
+              <td class="price">9,90 €</td>
+              <td class="price">2,25 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">5,63 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">4,27 €</td>
+              <td class="price">43,1 %</td>
+            </tr>
+            <tr>
+              <td>Hack &amp; Cheese Baguette</td>
+              <td class="price">9,90 €</td>
+              <td class="price">2,45 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">5,83 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">4,07 €</td>
+              <td class="price">41,1 %</td>
+            </tr>
+            <tr>
+              <td>⭐ Steak Baguette</td>
+              <td class="price">12,50 €</td>
+              <td class="price">3,80 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">7,18 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">5,32 €</td>
+              <td class="price">42,6 %</td>
+            </tr>
+            <tr>
+              <td>🏆 Philly Cheese Baguette</td>
+              <td class="price">13,90 €</td>
+              <td class="price">4,25 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">7,63 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">6,27 €</td>
+              <td class="price">45,1 %</td>
+            </tr>
+            <tr>
+              <td>🌟 Veggie Mediterranean</td>
+              <td class="price">9,90 €</td>
+              <td class="price">2,10 €</td>
+              <td class="price">3,38 €</td>
+              <td class="price">5,48 €</td>
+              <td class="price" style="color:var(--gold);font-weight:700;">4,42 €</td>
+              <td class="price">44,6 %</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="alert alert-info" style="margin-top:16px;">
+          <span class="alert-icon">🏆</span>
+          <span>Top-Empfehlung: Das <strong>Philly Cheese Baguette (13,90 €)</strong> bringt mit 6,27 € den höchsten absoluten Reingewinn. Der <strong>Cheeseburger (9,90 €)</strong> hat mit 46,2 % die beste Marge. Beilagen &amp; Getränke sind Gewinn-Booster – immer aktiv anbieten: „Pommes dazu?" oder „Etwas zu trinken?"</span>
+        </div>
+      </div>
+      
+    </div><!-- end costing-tab-summary -->
+    </div><!-- end costing-tabs -->
+    </div><!-- end page-costing -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: MARKETING                                                      -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-marketing">
+      <div class="page-header">
+        <div class="label">MARKETING</div>
+        <h2>Marketing & Kundenbindung</h2>
+        <div class="gold-divider"></div>
+        <p>Strategien, Vorlagen und Aktionen für Social Media, Standort-Marketing und Kundenbindung des Burger & Baguette Foodtrucks.</p>
+      </div>
+
+      <!-- Tab-Navigation -->
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+        <button class="tab-btn active" onclick="showTab('mkt','social',this)" style="background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;">📱 Social Media</button>
+        <button class="tab-btn" onclick="showTab('mkt','aktionen',this)" style="background:transparent;color:var(--text-muted);border:1px solid rgba(201,168,76,0.15);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;">🎯 Aktionen & Angebote</button>
+        <button class="tab-btn" onclick="showTab('mkt','standort',this)" style="background:transparent;color:var(--text-muted);border:1px solid rgba(201,168,76,0.15);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;">📍 Standort-Marketing</button>
+        <button class="tab-btn" onclick="showTab('mkt','kundenbindung',this)" style="background:transparent;color:var(--text-muted);border:1px solid rgba(201,168,76,0.15);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;">❤️ Kundenbindung</button>
+        <button class="tab-btn" onclick="showTab('mkt','budget',this)" style="background:transparent;color:var(--text-muted);border:1px solid rgba(201,168,76,0.15);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;">💶 Budget & KPIs</button>
+      </div>
+
+      <!-- ── TAB: SOCIAL MEDIA ── -->
+      <div class="tab-content active" id="mkt-tab-social">
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>📱 Plattform-Strategie</h3>
+            <table class="data-table">
+              <thead><tr><th>Plattform</th><th>Zielgruppe</th><th>Frequenz</th><th>Format</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Instagram</strong></td><td>18–35 Jahre</td><td class="data-editable="243" contenteditable="false">3–4×/Woche</td><td>Reels, Stories, Posts</td></tr>
+                <tr><td><strong>TikTok</strong></td><td>16–28 Jahre</td><td class="data-editable="244" contenteditable="false">2–3×/Woche</td><td>Kurzvideos, Trends</td></tr>
+                <tr><td><strong>Facebook</strong></td><td>30–55 Jahre</td><td class="data-editable="245" contenteditable="false">2×/Woche</td><td>Posts, Events, Gruppen</td></tr>
+                <tr><td><strong>Google Maps</strong></td><td>Alle</td><td class="data-editable="246" contenteditable="false">Täglich</td><td>Standort-Updates</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>📅 Wöchentlicher Content-Plan</h3>
+            <table class="data-table">
+              <thead><tr><th>Tag</th><th>Content-Idee</th></tr></thead>
+              <tbody>
+                <tr><td><span style="color:var(--gold);font-weight:600;">Mo</span></td><td>Wochenstart-Post: Standort + Öffnungszeiten</td></tr>
+                <tr><td><span style="color:var(--gold);font-weight:600;">Di</span></td><td>Behind the Scenes: Vorbereitung / Mise en Place</td></tr>
+                <tr><td><span style="color:var(--gold);font-weight:600;">Mi</span></td><td>Produkt-Spotlight: Ein Burger/Baguette im Detail</td></tr>
+                <tr><td><span style="color:var(--gold);font-weight:600;">Do</span></td><td>Kundenfoto / Repost / Bewertung teilen</td></tr>
+                <tr><td><span style="color:var(--gold);font-weight:600;">Fr</span></td><td>Wochenend-Ankündigung + Tages-Special</td></tr>
+                <tr><td><span style="color:var(--gold);font-weight:600;">Sa</span></td><td>Live-Story vom Standort, Warteschlange, Stimmung</td></tr>
+                <tr><td><span style="color:var(--gold);font-weight:600;">So</span></td><td>Rückblick / Danke-Post / Wochenvorschau</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>✍️ Caption-Vorlagen (Copy & Paste)</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;">
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;border-left:3px solid var(--gold);">
+              <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:8px;text-transform:uppercase;">Standort-Ankündigung</div>
+              <p style="font-size:13px;line-height:1.7;">📍 Heute ab [UHRZEIT] Uhr bei [STANDORT]!<br>🍔 Frische Smash Burger & Gourmet Baguettes<br>⏰ Bis [UHRZEIT] Uhr – komm vorbei!<br><br>#BurgerBaguette #Foodtruck #[STADT] #StreetFood #SmashBurger</p>
+            </div>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;border-left:3px solid var(--gold);">
+              <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:8px;text-transform:uppercase;">Produkt-Post</div>
+              <p style="font-size:13px;line-height:1.7;">🏆 Unser [PRODUKTNAME] – [kurze Beschreibung]<br>✨ [Besonderheit 1]<br>✨ [Besonderheit 2]<br>💶 Nur [PREIS] €<br><br>Welcher ist euer Favorit? 👇<br>#SmashBurger #GourmetBaguette #Foodie</p>
+            </div>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;border-left:3px solid var(--gold);">
+              <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:8px;text-transform:uppercase;">Kundenfoto-Repost</div>
+              <p style="font-size:13px;line-height:1.7;">❤️ Danke an @[USERNAME] für dieses tolle Foto!<br>Nichts macht uns glücklicher als zufriedene Gäste 😊<br><br>Teilt eure Bilder mit #BurgerBaguette – wir reposten die schönsten!<br><br>#CustomerLove #Foodtruck #StreetFood</p>
+            </div>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;border-left:3px solid var(--gold);">
+              <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:8px;text-transform:uppercase;">Tages-Special</div>
+              <p style="font-size:13px;line-height:1.7;">🔥 TAGES-SPECIAL – nur heute!<br>[PRODUKT] + [BEILAGE] für nur [PREIS] €<br>(statt [NORMALPREIS] €)<br><br>⏰ Nur solange der Vorrat reicht!<br>📍 [STANDORT]<br><br>#DealOfTheDay #Foodtruck #[STADT]</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📸 Foto-Tipps für perfekte Food-Fotos</h3>
+          <div class="grid-3">
+            <div>
+              <h4>🌅 Licht</h4>
+              <ul class="checklist">
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Natürliches Seitenlicht nutzen (kein direktes Sonnenlicht)</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Goldene Stunde: 1h nach Sonnenaufgang / vor Sonnenuntergang</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Reflektorkarte aus weißem Karton als Aufheller</li>
+              </ul>
+            </div>
+            <div>
+              <h4>📐 Komposition</h4>
+              <ul class="checklist">
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>45°-Winkel für Burger (zeigt Schichten)</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Vogelperspektive für Baguette + Beilagen</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Hintergrund: dunkles Holzbrett oder Pergamentpapier</li>
+              </ul>
+            </div>
+            <div>
+              <h4>✏️ Bearbeitung</h4>
+              <ul class="checklist">
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Helligkeit +10, Kontrast +5, Sättigung +15</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Warmton-Filter (Orange/Braun-Töne betonen)</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Konsistenter Filter für alle Posts (Wiedererkennungswert)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: AKTIONEN & ANGEBOTE ── -->
+      <div class="tab-content" id="mkt-tab-aktionen">
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>🎯 Bewährte Aktionsformate</h3>
+            <table class="data-table">
+              <thead><tr><th>Aktion</th><th>Mechanik</th><th>Empf. Zeitraum</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Happy Hour</strong></td><td>-20% auf alles 14–16 Uhr</td><td>Wochentags</td></tr>
+                <tr><td><strong>Kombi-Deal</strong></td><td>Burger/Bag + Pommes + Drink</td><td>Dauerhaft</td></tr>
+                <tr><td><strong>Treue-Stempel</strong></td><td>10× kaufen → 1× gratis</td><td>Dauerhaft</td></tr>
+                <tr><td><strong>Wochenspezialist</strong></td><td>Saisonales Sonderprodukt</td><td>Wöchentlich</td></tr>
+                <tr><td><strong>Geburtstags-Deal</strong></td><td>Gratis Pommes am Geburtstag</td><td>Ganzjährig</td></tr>
+                <tr><td><strong>Gruppen-Rabatt</strong></td><td>Ab 5 Personen: -10%</td><td>Events/Märkte</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>📆 Saisonale Aktionsplanung</h3>
+            <table class="data-table">
+              <thead><tr><th>Monat</th><th>Anlass</th><th>Idee</th></tr></thead>
+              <tbody>
+                <tr><td>Feb</td><td>Valentinstag</td><td>„Love Burger" – Herz-Patty, rosa Sauce</td></tr>
+                <tr><td>Apr</td><td>Ostern</td><td>Frühlingsfrische Baguette-Variante</td></tr>
+                <tr><td>Mai</td><td>Muttertag</td><td>Gratis Dessert für Mütter</td></tr>
+                <tr><td>Jun–Aug</td><td>Sommer</td><td>Eisgekühlte Getränke, Outdoor-Specials</td></tr>
+                <tr><td>Okt</td><td>Oktoberfest</td><td>„Wiesn-Burger" mit Senf & Brezel-Bun</td></tr>
+                <tr><td>Nov–Dez</td><td>Weihnachtsmarkt</td><td>Glühwein-Angebot, Winterbaguette</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🎁 Kombi-Deals – Kalkulation</h3>
+          <div class="alert alert-info" style="margin-bottom:16px;"><span class="alert-icon">💡</span><span>Kombi-Deals erhöhen den Durchschnittsbon um 30–50%. Immer aktiv anbieten: <strong>„Pommes dazu für nur 3,50 €?"</strong></span></div>
+          <table class="data-table">
+            <thead><tr><th>Deal-Name</th><th>Inhalt</th><th>Einzelpreis</th><th>Deal-Preis</th><th>Ersparnis Kunde</th><th>Mehrerlös</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Classic Combo</strong></td><td>Classic Smash + Pommes + Softdrink</td><td>15,90 €</td><td class="price" style="color:var(--gold);font-weight:700;">13,90 €</td><td>2,00 €</td><td>+5,00 € ggü. Burger allein</td></tr>
+              <tr><td><strong>Cheese Combo</strong></td><td>Cheeseburger + Pommes + Softdrink</td><td>16,90 €</td><td class="price" style="color:var(--gold);font-weight:700;">14,90 €</td><td>2,00 €</td><td>+5,00 € ggü. Burger allein</td></tr>
+              <tr><td><strong>Steak Combo</strong></td><td>Steak Baguette + Pommes + Wasser</td><td>19,00 €</td><td class="price" style="color:var(--gold);font-weight:700;">16,90 €</td><td>2,10 €</td><td>+4,40 € ggü. Baguette allein</td></tr>
+              <tr><td><strong>Veggie Combo</strong></td><td>Veggie Mediterranean + Pommes + Wasser</td><td>16,40 €</td><td class="price" style="color:var(--gold);font-weight:700;">14,50 €</td><td>1,90 €</td><td>+4,60 € ggü. Baguette allein</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── TAB: STANDORT-MARKETING ── -->
+      <div class="tab-content" id="mkt-tab-standort">
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>📍 Vor-Ort Sichtbarkeit</h3>
+            <ul class="checklist">
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Menütafel</strong> – Groß, gut lesbar, mit Preisen. Mindestens 2m Höhe.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Aufsteller / Sandwich-Board</strong> – 5–10m vor dem Truck, mit Tages-Special.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Branded Verpackung</strong> – Logo auf Papier, Tüten, Bechern. Kostenlose Werbung.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>QR-Code</strong> – Auf Tisch/Theke: verlinkt auf Instagram + Google Maps Bewertung.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Duft-Marketing</strong> – Grillgeruch zieht Kunden an. Truck so positionieren, dass Wind den Duft in Laufrichtung trägt.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Musik</strong> – Dezente Hintergrundmusik schafft Atmosphäre (GEMA beachten).</div></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>🗺️ Digitale Präsenz – Checkliste</h3>
+            <ul class="checklist">
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Google Business Profil</strong> – Täglich Standort + Öffnungszeiten aktualisieren.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Google Maps Fotos</strong> – Mindestens 10 professionelle Produktfotos hochladen.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Bewertungen sammeln</strong> – Jeden zufriedenen Kunden aktiv um Bewertung bitten.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Instagram Location-Tag</strong> – Bei jedem Post den aktuellen Standort taggen.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Facebook Events</strong> – Für jeden Standort ein Event anlegen (Reichweite!).</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Foodtruck-Portale</strong> – Eintrag bei foodtruckszene.de, streetfood-finder.de.</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>WhatsApp-Kanal</strong> – Kunden abonnieren Standort-Updates direkt aufs Handy.</div></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>🤝 Kooperationen & Partnerschaften</h3>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;">
+              <h4>🏢 Firmenkunden</h4>
+              <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Unternehmen ab 50 Mitarbeitern ansprechen. Lunch-Catering 1–2× pro Woche. Vorteile: feste Einnahmen, planbare Mengen. Angebot: Gruppenrabatt 10%, Vorab-Bestellung per WhatsApp.</p>
+            </div>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;">
+              <h4>🎪 Event-Veranstalter</h4>
+              <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Stadtfeste, Konzerte, Sportevents. Frühzeitig (3–6 Monate voraus) bewerben. Standgebühr einkalkulieren (10–25% Umsatz). Hohe Reichweite = Neukundengewinnung.</p>
+            </div>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;">
+              <h4>📸 Food-Blogger / Influencer</h4>
+              <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Lokale Food-Blogger einladen (kostenloses Essen gegen ehrliche Bewertung). Micro-Influencer (1.000–10.000 Follower) haben oft höhere Engagement-Rate als große Accounts.</p>
+            </div>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;">
+              <h4>🏪 Lokale Businesses</h4>
+              <p style="font-size:13px;color:var(--text-muted);line-height:1.6;">Cross-Promotion mit Bäckereien, Getränkelieferanten, Brauereien. Gegenseitige Empfehlung auf Social Media. Gemeinsame Aktionen (z.B. lokales Craft-Bier als Getränk).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: KUNDENBINDUNG ── -->
+      <div class="tab-content" id="mkt-tab-kundenbindung">
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>🎟️ Treueprogramm – Stempelkarte</h3>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:20px;margin-bottom:16px;text-align:center;">
+              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:16px;">
+                <div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🍔</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🍔</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">🍔</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div><div style="width:40px;height:40px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">○</div>
+              </div>
+              <p style="font-size:13px;color:var(--text-muted);">10× kaufen → 1× gratis (Burger oder Baguette nach Wahl)</p>
+            </div>
+            <ul class="checklist">
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Stempelkarten aus stabilem Karton (visitenkartenformat)</li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Eigener Stempel mit BB-Logo</li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Jeden Kauf sofort stempeln (nicht vergessen!)</li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Karte bei Einlösung einbehalten und neue ausgeben</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>⭐ Bewertungsmanagement</h3>
+            <div class="alert alert-info" style="margin-bottom:16px;"><span class="alert-icon">💡</span><span>Eine Verbesserung von 1 Stern auf Google Maps steigert den Umsatz um durchschnittlich <strong>5–9%</strong>.</span></div>
+            <h4>Bewertung anfragen – Skript</h4>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;margin-bottom:12px;">
+              <p style="font-size:13px;line-height:1.7;font-style:italic;">"Hat es Ihnen geschmeckt? Wir würden uns sehr freuen, wenn Sie uns eine kurze Bewertung bei Google hinterlassen – das hilft uns sehr! Einfach den QR-Code scannen, dauert nur 30 Sekunden."</p>
+            </div>
+            <h4>Auf negative Bewertungen reagieren</h4>
+            <div style="background:var(--bg-darker);border-radius:8px;padding:16px;">
+              <p style="font-size:13px;line-height:1.7;font-style:italic;">"Vielen Dank für Ihr Feedback. Es tut uns leid, dass Ihr Besuch nicht Ihren Erwartungen entsprach. Wir nehmen Ihre Kritik ernst und arbeiten kontinuierlich an unserer Qualität. Wir würden uns freuen, Sie bald wieder bei uns begrüßen zu dürfen."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📱 WhatsApp-Kanal – Standort-Updates</h3>
+          <div class="grid-2">
+            <div>
+              <h4>Setup-Anleitung</h4>
+              <ul class="checklist">
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>WhatsApp Business App installieren</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Kanal erstellen: „Burger & Baguette – Standort-Updates"</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Kanal-Link auf Stempelkarte und Verpackung drucken</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>QR-Code am Truck aufhängen</li>
+                <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span>Täglich morgens Standort + Uhrzeit posten</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Nachrichten-Vorlagen</h4>
+              <div style="background:var(--bg-darker);border-radius:8px;padding:12px;margin-bottom:8px;">
+                <div style="font-size:11px;color:var(--gold);margin-bottom:4px;">MORGENS (8–9 Uhr)</div>
+                <p style="font-size:12px;line-height:1.6;">📍 Heute bei [STANDORT]<br>⏰ [VON] – [BIS] Uhr<br>🔥 Tages-Special: [PRODUKT] für [PREIS] €</p>
+              </div>
+              <div style="background:var(--bg-darker);border-radius:8px;padding:12px;">
+                <div style="font-size:11px;color:var(--gold);margin-bottom:4px;">BEI AUSVERKAUF</div>
+                <p style="font-size:12px;line-height:1.6;">⚡ Fast ausverkauft! Nur noch [X] Portionen [PRODUKT] verfügbar. Schnell kommen! 🏃</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── TAB: BUDGET & KPIs ── -->
+      <div class="tab-content" id="mkt-tab-budget">
+        <div class="grid-2" style="margin-bottom:20px;">
+          <div class="card">
+            <h3>💶 Marketing-Budget (Monatlich)</h3>
+            <table class="data-table">
+              <thead><tr><th>Maßnahme</th><th>Budget</th><th>Priorität</th></tr></thead>
+              <tbody>
+                <tr><td>Social Media (Werbeanzeigen)</td><td class="price" style="color:var(--gold);">150 €</td><td><span style="background:rgba(74,222,128,0.15);color:#4ade80;padding:2px 8px;border-radius:4px;font-size:12px;">Hoch</span></td></tr>
+                <tr><td>Druckmaterial (Flyer, Stempelkarten)</td><td class="price" style="color:var(--gold);">80 €</td><td><span style="background:rgba(74,222,128,0.15);color:#4ade80;padding:2px 8px;border-radius:4px;font-size:12px;">Hoch</span></td></tr>
+                <tr><td>Fotografie / Content-Erstellung</td><td class="price" style="color:var(--gold);">100 €</td><td><span style="background:rgba(201,168,76,0.15);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:12px;">Mittel</span></td></tr>
+                <tr><td>Google Ads (lokale Suche)</td><td class="price" style="color:var(--gold);">100 €</td><td><span style="background:rgba(201,168,76,0.15);color:var(--gold);padding:2px 8px;border-radius:4px;font-size:12px;">Mittel</span></td></tr>
+                <tr><td>Influencer / Blogger</td><td class="price" style="color:var(--gold);">70 €</td><td><span style="background:rgba(248,113,113,0.15);color:#f87171;padding:2px 8px;border-radius:4px;font-size:12px;">Optional</span></td></tr>
+                <tr style="font-weight:700;background:rgba(212,175,55,0.1);"><td>Gesamt</td><td class="price" style="color:var(--gold);font-weight:700;">500 €</td><td>= ~3% Umsatz</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>📊 Marketing-KPIs – Zielwerte</h3>
+            <table class="data-table">
+              <thead><tr><th>KPI</th><th>Zielwert</th><th>Messung</th></tr></thead>
+              <tbody>
+                <tr><td>Instagram-Follower</td><td class="price" style="color:var(--gold);">+50/Monat</td><td>Monatlich</td></tr>
+                <tr><td>Instagram Engagement-Rate</td><td class="price" style="color:var(--gold);">&gt; 4%</td><td>Pro Post</td></tr>
+                <tr><td>Google-Bewertungen</td><td class="price" style="color:var(--gold);">+5/Monat</td><td>Monatlich</td></tr>
+                <tr><td>Google-Bewertungsschnitt</td><td class="price" style="color:var(--gold);">&ge; 4,5 ⭐</td><td>Laufend</td></tr>
+                <tr><td>WhatsApp-Kanal Abonnenten</td><td class="price" style="color:var(--gold);">+20/Monat</td><td>Monatlich</td></tr>
+                <tr><td>Kombi-Deal-Quote</td><td class="price" style="color:var(--gold);">&ge; 40%</td><td>Täglich</td></tr>
+                <tr><td>Ø Bon-Wert</td><td class="price" style="color:var(--gold);">&ge; 13,50 €</td><td>Täglich</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>📈 Marketing-ROI Rechner</h3>
+          <div class="alert alert-info" style="margin-bottom:16px;"><span class="alert-icon">💡</span><span>Bei 500 € Marketingbudget und 17.500 € Monatsumsatz: Jeder investierte Euro bringt <strong>35 € Umsatz</strong> zurück (ROI: 3.400%).</span></div>
+          <div class="grid-3">
+            <div style="text-align:center;padding:20px;background:var(--bg-darker);border-radius:8px;">
+              <div style="font-size:28px;font-weight:700;color:var(--gold);">500 €</div>
+              <div style="font-size:12px;color:var(--text-muted);">Monatliches Marketing-Budget</div>
+            </div>
+            <div style="text-align:center;padding:20px;background:var(--bg-darker);border-radius:8px;">
+              <div style="font-size:28px;font-weight:700;color:#4ade80;">3%</div>
+              <div style="font-size:12px;color:var(--text-muted);">Anteil am Umsatz</div>
+            </div>
+            <div style="text-align:center;padding:20px;background:var(--bg-darker);border-radius:8px;">
+              <div style="font-size:28px;font-weight:700;color:var(--gold);">35×</div>
+              <div style="font-size:12px;color:var(--text-muted);">Umsatz pro investiertem €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end page-marketing -->
+
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <!-- PAGE: AUSSTATTUNG & INVESTITION                                     -->
+    <!-- ═══════════════════════════════════════════════════════════════════ -->
+    <div class="page" id="page-ausstattung">
+      <div class="page-header">
+        <div class="label">AUSSTATTUNG & INVESTITION</div>
+        <h2>Geräte, Installation & Gesamtinvestition</h2>
+        <div class="gold-divider"></div>
+        <p>Vollständige Aufstellung aller Geräte, Installationskosten und sonstigen Investitionen für den Burger & Baguette Foodtruck.</p>
+      </div>
+
+      <!-- KPI-Übersicht oben -->
+      <div class="grid-4" style="margin-bottom:28px;">
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="247" contenteditable="false">10.000,00 €</div>
+          <div class="kpi-label">Trailer / Foodtruck</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="248" contenteditable="false">6.114,00 €</div>
+          <div class="kpi-label">Geräte & Ausstattung</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value" data-editable="249" contenteditable="false">5.600,00 €</div>
+          <div class="kpi-label">Installation & Folierung</div>
+        </div>
+        <div class="kpi-card" style="border-color:rgba(201,168,76,0.4);">
+          <div class="kpi-value" style="font-size:20px;" data-editable="250" contenteditable="false">21.714,00 €</div>
+          <div class="kpi-label" style="color:var(--gold);font-weight:700;">Gesamtinvestition</div>
+        </div>
+      </div>
+
+      <!-- Tab-Navigation -->
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">
+        <button class="tab-btn active" onclick="showTab('aus','geraete',this)" style="background:rgba(201,168,76,0.15);color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:8px 18px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;">🍳 Geräte & Ausstattung</button>
+        <button class="tab-btn" onclick="showTab('aus','installation',this)" style="background:transparent;color:var(--text-muted);border:1px solid rgba(201,168,76,0.15);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;">🔌 Installation</button>
+        <button class="tab-btn" onclick="showTab('aus','gesamt',this)" style="background:transparent;color:var(--text-muted);border:1px solid rgba(201,168,76,0.15);padding:8px 18px;border-radius:6px;cursor:pointer;font-size:13px;">📊 Gesamtinvestition</button>
+      </div>
+
+      <!-- ── TAB: GERÄTE ── -->
+      <div class="tab-content active" id="aus-tab-geraete">
+
+        <!-- Grill & Frittieren -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3>🔥 Grill & Frittieren</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Art.-Nr.</th><th>Gerät</th><th>Maße (B×T×H mm)</th><th>Technische Daten</th><th style="text-align:right;">Preis</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td style="color:var(--text-muted);font-size:12px;">EMP.6IE030</td>
+                <td><strong>Elektro-Grillplatte</strong><br><span style="font-size:12px;color:var(--text-muted);">Glatte Platte</span></td>
+                <td style="font-size:12px;" data-editable="251" contenteditable="false">900 × 635 × 285</td>
+                <td style="font-size:12px;color:var(--text-muted);">Elektrisch, glatte Grillfläche</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="252" contenteditable="false">732,00 €</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td style="color:var(--text-muted);font-size:12px;">EMP.PLS.7FE020</td>
+                <td><strong>Elektro-Fritteuse</strong></td>
+                <td style="font-size:12px;" data-editable="253" contenteditable="false">800 × 730 × 300</td>
+                <td style="font-size:12px;color:var(--text-muted);">Elektrisch</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="254" contenteditable="false">1.028,00 €</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Unterbautisch Fritteuse</strong><br><span style="font-size:12px;color:var(--text-muted);">Edelstahl, mit Grundboden</span></td>
+                <td style="font-size:12px;" data-editable="255" contenteditable="false">800 × 700 mm</td>
+                <td style="font-size:12px;color:var(--text-muted);">Edelstahl, offener Unterbau</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="256" contenteditable="false">100,00 €</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Unterbautisch Grill</strong><br><span style="font-size:12px;color:var(--text-muted);">Edelstahl, mit Grundboden</span></td>
+                <td style="font-size:12px;" data-editable="257" contenteditable="false">1.200 × 700 mm</td>
+                <td style="font-size:12px;color:var(--text-muted);">Edelstahl, offener Unterbau</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="258" contenteditable="false">100,00 €</td>
+              </tr>
+              <tr style="background:rgba(201,168,76,0.06);font-weight:700;">
+                <td colspan="5" style="text-align:right;padding-right:16px;">Zwischensumme Grill & Frittieren</td>
+                <td class="price" style="text-align:right;color:var(--gold);">1.960,00 €</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Kühlung & Lagerung -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3>🧊 Kühlung & Lagerung</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Art.-Nr.</th><th>Gerät</th><th>Maße (B×T×H mm)</th><th>Technische Daten</th><th style="text-align:right;">Preis</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>5</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Saladette TORONTO</strong><br><span style="font-size:12px;color:var(--text-muted);">4 Türen · 6× GN 1/1 · schwarze Granitarbeitsplatte</span></td>
+                <td style="font-size:12px;" data-editable="259" contenteditable="false">2.550 × 900 × 900</td>
+                <td style="font-size:12px;color:var(--text-muted);">Gekühlte Arbeitsfläche, GN-Behälter</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="260" contenteditable="false">2.000,00 €</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Getränkekühlschrank</strong><br><span style="font-size:12px;color:var(--text-muted);">330 Liter · 1 Glastür</span></td>
+                <td style="font-size:12px;" data-editable="261" contenteditable="false">590 × 615 × 1.921</td>
+                <td style="font-size:12px;color:var(--text-muted);">330 L, Glastür, Umluftkühlung</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="262" contenteditable="false">200,00 €</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Gefrierschrank</strong><br><span style="font-size:12px;color:var(--text-muted);">2 Glasschiebetüren</span></td>
+                <td style="font-size:12px;" data-editable="263" contenteditable="false">720 × 630 × 890</td>
+                <td style="font-size:12px;color:var(--text-muted);">200 W · 230V/1Ph</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="264" contenteditable="false">400,00 €</td>
+              </tr>
+              <tr style="background:rgba(201,168,76,0.06);font-weight:700;">
+                <td colspan="5" style="text-align:right;padding-right:16px;">Zwischensumme Kühlung & Lagerung</td>
+                <td class="price" style="text-align:right;color:var(--gold);">2.600,00 €</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Toasten & Vorbereitung -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3>🍞 Toasten & Vorbereitung</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Art.-Nr.</th><th>Gerät</th><th>Maße (B×T×H mm)</th><th>Technische Daten</th><th style="text-align:right;">Preis</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>8</td>
+                <td style="color:var(--text-muted);font-size:12px;">EMP.MEK010</td>
+                <td><strong>Förderband-Toaster</strong><br><span style="font-size:12px;color:var(--text-muted);">Conveyor Toaster</span></td>
+                <td style="font-size:12px;" data-editable="265" contenteditable="false">478 × 644 × 431</td>
+                <td style="font-size:12px;color:var(--text-muted);">3,5 kW · 230V · 35 Toasts/Min.</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="266" contenteditable="false">586,00 €</td>
+              </tr>
+              <tr style="background:rgba(201,168,76,0.06);font-weight:700;">
+                <td colspan="5" style="text-align:right;padding-right:16px;">Zwischensumme Toasten & Vorbereitung</td>
+                <td class="price" style="text-align:right;color:var(--gold);">586,00 €</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Hygiene & Wasserversorgung -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3>🚿 Hygiene & Wasserversorgung</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Art.-Nr.</th><th>Gerät</th><th>Maße (B×T×H mm)</th><th>Technische Daten</th><th style="text-align:right;">Preis</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>9</td>
+                <td style="color:var(--text-muted);font-size:12px;">EMP.DKE.001</td>
+                <td><strong>Kniegesteuerte Handwaschbecken</strong><br><span style="font-size:12px;color:var(--text-muted);">Knee Operating Handwash Basin</span></td>
+                <td style="font-size:12px;" data-editable="267" contenteditable="false">505 × 450 × 220</td>
+                <td style="font-size:12px;color:var(--text-muted);">Kniebedienung, Warm-/Kaltwasser</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="268" contenteditable="false">110,00 €</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td style="color:var(--text-muted);font-size:12px;">EMP.E.77085-1ET</td>
+                <td><strong>Edelstahl-Spülbecken 1-becken</strong><br><span style="font-size:12px;color:var(--text-muted);">Sink with 1 Bowl · Einbau</span></td>
+                <td style="font-size:12px;" data-editable="269" contenteditable="false">700×700×850 / Becken: 500×500×300</td>
+                <td style="font-size:12px;color:var(--text-muted);">1 Becken, Einbau, Edelstahl</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="270" contenteditable="false">258,00 €</td>
+              </tr>
+              <tr style="background:rgba(201,168,76,0.06);font-weight:700;">
+                <td colspan="5" style="text-align:right;padding-right:16px;">Zwischensumme Hygiene & Wasser</td>
+                <td class="price" style="text-align:right;color:var(--gold);">368,00 €</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Arbeitsflächen & Stauraum -->
+        <div class="card" style="margin-bottom:20px;">
+          <h3>🗄️ Arbeitsflächen & Stauraum</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Art.-Nr.</th><th>Gerät</th><th>Maße (B×T×H mm)</th><th>Technische Daten</th><th style="text-align:right;">Preis</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>11</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Arbeitsschrank PREMIUM</strong><br><span style="font-size:12px;color:var(--text-muted);">Edelstahl · Schiebetür · verstärkt</span></td>
+                <td style="font-size:12px;" data-editable="271" contenteditable="false">1.600 × 800 × 870</td>
+                <td style="font-size:12px;color:var(--text-muted);">Edelstahl, Schiebetür, Premium</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="272" contenteditable="false">350,00 €</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td style="color:var(--text-muted);font-size:12px;">–</td>
+                <td><strong>Arbeitsschrank ECO</strong><br><span style="font-size:12px;color:var(--text-muted);">Edelstahl · Schiebetür · Standard</span></td>
+                <td style="font-size:12px;" data-editable="273" contenteditable="false">1.600 × 600 × 870</td>
+                <td style="font-size:12px;color:var(--text-muted);">Edelstahl, Schiebetür, ECO</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="274" contenteditable="false">250,00 €</td>
+              </tr>
+              <tr style="background:rgba(201,168,76,0.06);font-weight:700;">
+                <td colspan="5" style="text-align:right;padding-right:16px;">Zwischensumme Arbeitsflächen & Stauraum</td>
+                <td class="price" style="text-align:right;color:var(--gold);">600,00 €</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Geräte-Gesamtsumme -->
+        <div class="card" style="border-color:rgba(201,168,76,0.4);background:rgba(201,168,76,0.05);">
+          <h3>📊 Geräte nach Kategorie – Zusammenfassung</h3>
+          <table class="data-table">
+            <thead><tr><th>Kategorie</th><th>Anzahl</th><th style="text-align:right;">Kosten</th><th style="text-align:right;">Anteil</th></tr></thead>
+            <tbody>
+              <tr><td>🔥 Grill & Frittieren</td><td>4 Geräte</td><td class="price" style="text-align:right;">1.960,00 €</td><td style="text-align:right;color:var(--text-muted);">32,1 %</td></tr>
+              <tr><td>🧊 Kühlung & Lagerung</td><td>3 Geräte</td><td class="price" style="text-align:right;">2.600,00 €</td><td style="text-align:right;color:var(--text-muted);">42,5 %</td></tr>
+              <tr><td>🍞 Toasten & Vorbereitung</td><td>1 Gerät</td><td class="price" style="text-align:right;">586,00 €</td><td style="text-align:right;color:var(--text-muted);">9,6 %</td></tr>
+              <tr><td>🚿 Hygiene & Wasserversorgung</td><td>2 Geräte</td><td class="price" style="text-align:right;">368,00 €</td><td style="text-align:right;color:var(--text-muted);">6,0 %</td></tr>
+              <tr><td>🗄️ Arbeitsflächen & Stauraum</td><td>2 Geräte</td><td class="price" style="text-align:right;">600,00 €</td><td style="text-align:right;color:var(--text-muted);">9,8 %</td></tr>
+              <tr style="font-weight:700;background:rgba(201,168,76,0.1);"><td><strong>Gesamt Geräte</strong></td><td><strong>12 Geräte</strong></td><td class="price" style="text-align:right;color:var(--gold);font-weight:700;">6.114,00 €</td><td style="text-align:right;color:var(--gold);">100 %</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ── TAB: INSTALLATION ── -->
+      <div class="tab-content" id="aus-tab-installation">
+        <div class="card" style="margin-bottom:20px;">
+          <h3>🔌 Installationskosten – Detailaufstellung</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Bereich</th><th>Position</th><th style="text-align:right;">Material (eigene Kosten)</th><th style="text-align:right;">Einbau (Limit)</th><th style="text-align:right;">Gesamt</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>Elektro (32A)</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">32A-Anschluss, Absicherung, Verkabelung, Steckdosen</td>
+                <td class="price" style="text-align:right;" data-editable="275" contenteditable="false">900,00 €</td>
+                <td class="price" style="text-align:right;" data-editable="276" contenteditable="false">500,00 €</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;">1.400,00 €</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>Wasser (Warm/Kalt)</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Zuleitungen, Ablauf, Boiler, Anschlüsse Becken & Handwaschbecken</td>
+                <td class="price" style="text-align:right;" data-editable="277" contenteditable="false">500,00 €</td>
+                <td class="price" style="text-align:right;" data-editable="278" contenteditable="false">500,00 €</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;">1.000,00 €</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>Beleuchtung & Kleinteile</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">LED-Beleuchtung, Schalter, Kleinmaterial</td>
+                <td class="price" style="text-align:right;" data-editable="279" contenteditable="false">200,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);font-style:italic;">Eigenleistung</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;">200,00 €</td>
+              </tr>
+              <tr style="font-weight:700;background:rgba(201,168,76,0.1);">
+                <td colspan="3" style="text-align:right;padding-right:16px;"><strong>Zwischensumme Installation</strong></td>
+                <td class="price" style="text-align:right;color:var(--gold);">1.600,00 €</td>
+                <td class="price" style="text-align:right;color:var(--gold);">1.000,00 €</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-size:16px;">2.600,00 €</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert alert-info">
+          <span class="alert-icon">💡</span>
+          <span>Eigenleistung bei Beleuchtung & Kleinteilen spart ca. <strong>150–300 €</strong> Montagekosten. Elektro- und Wasserarbeiten müssen von Fachbetrieben ausgeführt werden (Gewährleistung, Versicherung).</span>
+        </div>
+      </div>
+
+      <!-- ── TAB: GESAMTINVESTITION ── -->
+      <div class="tab-content" id="aus-tab-gesamt">
+        <div class="card" style="margin-bottom:20px;">
+          <h3>📊 Gesamtinvestition – Vollständige Aufstellung</h3>
+          <table class="data-table">
+            <thead>
+              <tr><th>Nr.</th><th>Kategorie</th><th>Beschreibung</th><th style="text-align:right;">Betrag</th><th style="text-align:right;">Anteil</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><strong>🚛 Trailer / Foodtruck</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Anhänger inkl. Grundausstattung</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="280" contenteditable="false">10.000,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">46,0 %</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><strong>🔥 Grill & Frittieren</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Grillplatte, Fritteuse, 2× Unterbautisch</td>
+                <td class="price" style="text-align:right;" data-editable="281" contenteditable="false">1.960,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">9,0 %</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><strong>🧊 Kühlung & Lagerung</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Saladette, Getränkekühlschrank, Gefrierschrank</td>
+                <td class="price" style="text-align:right;" data-editable="282" contenteditable="false">2.600,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">12,0 %</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><strong>🍞 Toasten & Vorbereitung</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Förderband-Toaster</td>
+                <td class="price" style="text-align:right;" data-editable="283" contenteditable="false">586,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">2,7 %</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><strong>🚿 Hygiene & Wasser</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Handwaschbecken, Spülbecken</td>
+                <td class="price" style="text-align:right;" data-editable="284" contenteditable="false">368,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">1,7 %</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><strong>🗄️ Arbeitsflächen & Stauraum</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Arbeitsschrank PREMIUM + ECO</td>
+                <td class="price" style="text-align:right;" data-editable="285" contenteditable="false">600,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">2,8 %</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><strong>🔌 Installation Elektro (32A)</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Material + Einbau</td>
+                <td class="price" style="text-align:right;" data-editable="286" contenteditable="false">1.400,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">6,4 %</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><strong>💧 Installation Wasser</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Material + Einbau (Warm/Kalt)</td>
+                <td class="price" style="text-align:right;" data-editable="287" contenteditable="false">1.000,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">4,6 %</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><strong>💡 Beleuchtung & Kleinteile</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Material (Eigenleistung Einbau)</td>
+                <td class="price" style="text-align:right;" data-editable="288" contenteditable="false">200,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">0,9 %</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><strong>🎨 Folierung</strong></td>
+                <td style="font-size:12px;color:var(--text-muted);">Außengestaltung Foodtruck komplett</td>
+                <td class="price" style="text-align:right;color:var(--gold);font-weight:700;" data-editable="289" contenteditable="false">3.000,00 €</td>
+                <td style="text-align:right;color:var(--text-muted);">13,8 %</td>
+              </tr>
+              <tr style="font-weight:700;background:rgba(201,168,76,0.12);border-top:2px solid rgba(201,168,76,0.4);">
+                <td colspan="3" style="text-align:right;padding-right:16px;font-size:15px;"><strong>🏆 GESAMTINVESTITION</strong></td>
+                <td class="price" style="text-align:right;color:var(--gold);font-size:20px;font-weight:700;">21.714,00 €</td>
+                <td style="text-align:right;color:var(--gold);">100 %</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Zusammenfassung nach Hauptkategorien -->
+        <div class="grid-2">
+          <div class="card">
+            <h3>📋 Zusammenfassung nach Hauptkategorien</h3>
+            <table class="data-table">
+              <thead><tr><th>Hauptkategorie</th><th style="text-align:right;">Betrag</th><th style="text-align:right;">Anteil</th></tr></thead>
+              <tbody>
+                <tr><td>🚛 Trailer / Foodtruck</td><td class="price" style="text-align:right;color:var(--gold);">10.000,00 €</td><td style="text-align:right;">46,0 %</td></tr>
+                <tr><td>🍳 Geräte & Ausstattung (12 Pos.)</td><td class="price" style="text-align:right;color:var(--gold);">6.114,00 €</td><td style="text-align:right;">28,2 %</td></tr>
+                <tr><td>🔌 Installation (Elektro + Wasser + Licht)</td><td class="price" style="text-align:right;color:var(--gold);">2.600,00 €</td><td style="text-align:right;">12,0 %</td></tr>
+                <tr><td>🎨 Folierung</td><td class="price" style="text-align:right;color:var(--gold);">3.000,00 €</td><td style="text-align:right;">13,8 %</td></tr>
+                <tr style="font-weight:700;background:rgba(201,168,76,0.1);"><td><strong>Gesamt</strong></td><td class="price" style="text-align:right;color:var(--gold);font-weight:700;">21.714,00 €</td><td style="text-align:right;color:var(--gold);">100 %</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>💡 Finanzierungshinweise</h3>
+            <ul class="checklist">
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Eigenkapital empfohlen:</strong> Mindestens 30% = ca. 6.500 € Eigenanteil</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>KfW-Gründerkredit:</strong> Bis 25.000 € für Existenzgründer, günstige Konditionen</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Leasing möglich:</strong> Geräte (Grillplatte, Fritteuse) können geleast werden → schont Liquidität</div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Amortisation:</strong> Bei 1.500 €/Tag Umsatz und 40% Marge: Investition amortisiert in ca. <strong>4–5 Monaten</strong></div></li>
+              <li><span class="check-box" onclick="this.innerHTML=this.innerHTML?'':'✓'"></span><div><strong>Puffer einplanen:</strong> +10–15% Reserve für unvorhergesehene Kosten empfohlen (ca. 2.200 €)</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>📏 Trailer-Abmessungen</h3>
+            <table class="data-table">
+              <thead><tr><th>Maß</th><th>Außen</th><th>Innen</th></tr></thead>
+              <tbody>
+                <tr><td>Breite</td><td style="color:var(--gold);">520 cm</td><td>500 cm</td></tr>
+                <tr><td>Tiefe</td><td style="color:var(--gold);">220 cm</td><td>200 cm</td></tr>
+                <tr><td>Wandstärke</td><td colspan="2">je 10 cm</td></tr>
+                <tr><td>Tür</td><td colspan="2">80×190 cm, links, öffnet nach außen</td></tr>
+                <tr><td>Ausgabefenster</td><td colspan="2">410 cm Breite, Vorderwand</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card">
+            <h3>🗺️ Gerätepositionen (Hinterwand, v.l.n.r.)</h3>
+            <table class="data-table">
+              <thead><tr><th>Gerät</th><th>Breite</th><th>Tiefe</th></tr></thead>
+              <tbody>
+                <tr><td>Handwaschbecken EMP.DKE.001</td><td>50,5 cm</td><td>45 cm</td></tr>
+                <tr><td>Spülbecken EMP.E.77085-1ET</td><td>70 cm</td><td>70 cm</td></tr>
+                <tr><td>Grillplatte EMP.6IE030</td><td>90 cm</td><td>63,5 cm</td></tr>
+                <tr><td>Fritteuse EMP.PLS.7FE020</td><td>80 cm</td><td>73 cm</td></tr>
+                <tr><td>Toaster EMP.MEK010</td><td>47,8 cm</td><td>64,4 cm</td></tr>
+                <tr><td>Arbeitstisch PREMIUM</td><td>160 cm</td><td>80 cm</td></tr>
+                <tr><td>Kühlschrank 330L</td><td>59 cm</td><td>61,5 cm</td></tr>
+                <tr style="font-weight:700;"><td>Gesamt Hinterwand</td><td style="color:var(--gold);">≈ 500 cm</td><td>–</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card" style="margin-top:20px;">
+          <h3>🪟 Vorderwand (Kundenbereich)</h3>
+          <table class="data-table">
+            <thead><tr><th>Element</th><th>Breite</th><th>Tiefe/Höhe</th><th>Bemerkung</th></tr></thead>
+            <tbody>
+              <tr><td>Saladette TORONTO</td><td>255 cm</td><td>90 cm</td><td>4 Türen, 6×GN 1/1, Granit-Arbeitsplatte</td></tr>
+              <tr><td>Ausgabetheke</td><td>180 cm</td><td>30 cm</td><td>Kundenausgabe</td></tr>
+              <tr><td>Kassenbereich</td><td>70 cm</td><td>60 cm</td><td>Kasse + Kartenlesegerät</td></tr>
+              <tr><td>Ausgabefenster gesamt</td><td>410 cm</td><td>110 cm</td><td>Gesamte Frontöffnung</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- end page-ausstattung -->
+
+  </div><!-- end content -->
+  </div><!-- end main -->
+
+  <!-- Edit Mode Bar -->
+  <div id="edit-mode-bar" style="display:none;position:fixed;bottom:0;left:0;right:0;background:var(--gold);color:#1a0f00;padding:10px 24px;align-items:center;gap:16px;z-index:9999;font-weight:600;">
+    <span>✏️ Bearbeitungsmodus aktiv – klicke auf goldene Felder zum Bearbeiten</span>
+    <button onclick="saveEdits()" style="background:#1a0f00;color:var(--gold);border:none;padding:8px 20px;border-radius:6px;cursor:pointer;font-weight:700;">💾 Speichern (Strg+S)</button>
+    <button onclick="discardEdits()" style="background:rgba(0,0,0,0.2);color:#1a0f00;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;">Verwerfen (Esc)</button>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" style="display:none;position:fixed;bottom:80px;right:24px;background:#2d5a27;color:#fff;padding:12px 20px;border-radius:8px;z-index:10000;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.4);"></div>
+
+  <script>
+
+  // ============================================================
+  // SHOW TAB (Generic für alle Bereiche)
+  // ============================================================
+  function showTab(prefix, tabId, btn) {
+    // Alle Tab-Inhalte mit diesem Prefix ausblenden
+    document.querySelectorAll('[id^="' + prefix + '-tab-"]').forEach(t => t.classList.remove('active'));
+    const target = document.getElementById(prefix + '-tab-' + tabId);
+    if (target) target.classList.add('active');
+    // Aktiven Button markieren
+    if (btn) {
+      const parent = btn.closest('.tab-bar') || btn.parentElement;
+      if (parent) parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    // Charts initialisieren wenn nötig
+    if (prefix === 'costing' && tabId === 'summary') initCostingCharts();
+    if (prefix === 'finance') initFinanceCharts();
+  }
+
+  // ============================================================
+  // NAVIGATION
+  // ============================================================
+  function showPage(pageId, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const target = document.getElementById('page-' + pageId);
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (navEl && navEl.classList) navEl.classList.add('active');
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.classList.remove('open');
+    const mc = document.querySelector('.main-content');
+    if (mc) mc.scrollTop = 0;
+    if (pageId === 'finance') initFinanceCharts();
+    if (pageId === 'costing') initCostingCharts();
+  }
+
+  function toggleSidebar() {
+    const s = document.getElementById('sidebar');
+    if (s) s.classList.toggle('open');
+  }
+
+  // ============================================================
+  // TABS
+  // ============================================================
+  function showCostingTab(tabId, btn) {
+    document.querySelectorAll('[id^="costing-tab-"]').forEach(t => t.classList.remove('active'));
+    const target = document.getElementById('costing-tab-' + tabId);
+    if (target) target.classList.add('active');
+    document.querySelectorAll('.costing-tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    if (tabId === 'summary') initCostingCharts();
+  }
+
+  // ============================================================
+  // PASSWORD OVERLAY
+  // ============================================================
+  function checkPassword() {
+    const input = document.getElementById('pw-input');
+    const error = document.getElementById('pw-error');
+    const pw = input ? input.value : '';
+    // Simple password check – change 'bb2025' to your desired password
+    if (pw === 'zXC4x0wKqv') {
+      const overlay = document.getElementById('pw-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      localStorage.setItem('bb_auth', '1');
+    } else {
+      if (input) { input.classList.add('error'); setTimeout(() => input.classList.remove('error'), 500); }
+      if (error) error.textContent = 'Falsches Passwort. Bitte erneut versuchen.';
+    }
+  }
+
+  function togglePwVisibility() {
+    const input = document.getElementById('pw-input');
+    if (input) input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  // ============================================================
+  // EDIT MODE
+  // ============================================================
+  let editMode = false;
+  let originalValues = {};
+
+  function toggleEditMode() {
+    editMode = !editMode;
+    const bar = document.getElementById('edit-mode-bar');
+    const btn = document.getElementById('edit-mode-btn');
+    if (editMode) {
+      if (bar) bar.style.display = 'flex';
+      if (btn) { btn.textContent = '🔒 Bearbeitung beenden'; btn.style.background = 'rgba(201,168,76,0.2)'; }
+      document.querySelectorAll('[data-editable="242"]').forEach(el => {
+        el.setAttribute('contenteditable', 'true');
+        el.style.outline = '2px dashed var(--gold)';
+        el.style.borderRadius = '4px';
+        el.style.minWidth = '30px';
+        el.style.cursor = 'text';
+        originalValues[el.getAttribute('data-editable')] = el.textContent;
+      });
+      showToast('Bearbeitungsmodus aktiv – klicke auf goldene Felder');
+    } else {
+      discardEdits();
+    }
+  }
+
+  function saveEdits() {
+    const saved = {};
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.style.outline = '';
+      el.style.cursor = '';
+      saved[el.getAttribute('data-editable')] = el.textContent;
+    });
+    localStorage.setItem('bb_intranet_edits', JSON.stringify(saved));
+    editMode = false;
+    const bar = document.getElementById('edit-mode-bar');
+    if (bar) bar.style.display = 'none';
+    const btn = document.getElementById('edit-mode-btn');
+    if (btn) { btn.textContent = '✏️ Bearbeiten'; btn.style.background = ''; }
+    showToast('✅ Änderungen gespeichert!');
+  }
+
+  function discardEdits() {
+    document.querySelectorAll('[data-editable]').forEach(el => {
+      el.removeAttribute('contenteditable');
+      el.style.outline = '';
+      el.style.cursor = '';
+      if (originalValues[el.getAttribute('data-editable')] !== undefined) {
+        el.textContent = originalValues[el.getAttribute('data-editable')];
+      }
+    });
+    editMode = false;
+    const bar = document.getElementById('edit-mode-bar');
+    if (bar) bar.style.display = 'none';
+    const btn = document.getElementById('edit-mode-btn');
+    if (btn) { btn.textContent = '✏️ Bearbeiten'; btn.style.background = ''; }
+  }
+
+  function loadSavedEdits() {
+    // Bug-Fix: Alte kaputte localStorage-Daten löschen
+    // Ursache: alle data-editable hatten Key "", letzter Wert (0,02€) überschrieb alle
+    localStorage.removeItem('bb_intranet_edits');
+    // Werte sind im HTML fest kodiert – kein Laden aus localStorage nötig
+  }
+
+  document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'e') { e.preventDefault(); toggleEditMode(); }
+    if ((e.ctrlKey || e.metaKey) && e.key === 's' && editMode) { e.preventDefault(); saveEdits(); }
+    if (e.key === 'Escape' && editMode) discardEdits();
+    if (e.key === 'Enter' && document.getElementById('pw-input') === document.activeElement) checkPassword();
+  });
+
+  // ============================================================
+  // TOAST
+  // ============================================================
+  function showToast(msg, duration = 3000) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => { t.style.display = 'none'; }, duration);
+  }
+
+  // ============================================================
+  // FINANCE CHARTS
+  // ============================================================
+  let financeChartsInit = false;
+  function initFinanceCharts() {
+    if (financeChartsInit) return;
+    financeChartsInit = true;
+    const umsatzCtx = document.getElementById('umsatzChart');
+    if (umsatzCtx) {
+      new Chart(umsatzCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'],
+          datasets: [{
+            label: 'Umsatz (€)',
+            data: [45000,47000,52000,58000,65000,72000,75000,73000,68000,60000,50000,55000],
+            backgroundColor: 'rgba(201,168,76,0.7)',
+            borderColor: '#c9a84c', borderWidth: 1
+          },{
+            label: 'Reingewinn (€)',
+            data: [17100,17860,19760,22040,24700,27360,28500,27740,25840,22800,19000,20900],
+            backgroundColor: 'rgba(201,168,76,0.3)',
+            borderColor: 'rgba(201,168,76,0.8)', borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { labels: { color: '#c9a84c' } } },
+          scales: {
+            x: { ticks: { color: '#c9a84c' }, grid: { color: 'rgba(201,168,76,0.1)' } },
+            y: { ticks: { color: '#c9a84c' }, grid: { color: 'rgba(201,168,76,0.1)' } }
+          }
+        }
+      });
+    }
+    const kostenCtx = document.getElementById('kostenChart');
+    if (kostenCtx) {
+      new Chart(kostenCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Warenkosten','Personal','Miete','Franchise','Strom','Puffer'],
+          datasets: [{
+            data: [22500, 9000, 2500, 1500, 800, 850],
+            backgroundColor: ['#c9a84c','#8B6914','#5a4010','#3d2b0a','#2a1e07','#1a1204'],
+            borderColor: '#1E1209', borderWidth: 2
+          }]
+        },
+        options: { responsive: true, plugins: { legend: { labels: { color: '#c9a84c' } } } }
+      });
+    }
+  }
+
+  // ============================================================
+  // COSTING CHARTS
+  // ============================================================
+  let costingChartsInit = false;
+  function initCostingCharts() {
+    if (costingChartsInit) return;
+    costingChartsInit = true;
+    const ctx = document.getElementById('costingChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Classic','Cheese','Bacon','Caramel.','Hack&Cheese','Steak Bag.','Philly Bag.','Veggie'],
+        datasets: [{
+          label: 'Warenkosten (€)',
+          data: [1.80, 1.95, 2.90, 2.25, 2.45, 3.80, 4.25, 2.10],
+          backgroundColor: 'rgba(201,168,76,0.4)'
+        },{
+          label: 'Fixkosten (€)',
+          data: [3.38, 3.38, 3.38, 3.38, 3.38, 3.38, 3.38, 3.38],
+          backgroundColor: 'rgba(201,168,76,0.2)'
+        },{
+          label: 'Reingewinn (€)',
+          data: [3.72, 5.57, 4.62, 4.27, 4.07, 5.32, 6.27, 4.42],
+          backgroundColor: 'rgba(201,168,76,0.8)'
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { labels: { color: '#c9a84c' } } },
+        scales: {
+          x: { stacked: true, ticks: { color: '#c9a84c' }, grid: { color: 'rgba(201,168,76,0.1)' } },
+          y: { stacked: true, ticks: { color: '#c9a84c' }, grid: { color: 'rgba(201,168,76,0.1)' } }
+        }
+      }
+    });
+  }
+
+  // ============================================================
+  // INIT
+  // ============================================================
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check auth
+    if (localStorage.getItem('bb_auth') === '1') {
+      const overlay = document.getElementById('pw-overlay');
+      if (overlay) overlay.classList.add('hidden');
+    }
+    loadSavedEdits();
+  });
+  </script>
+</body>
+</html>
