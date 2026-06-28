@@ -1,0 +1,13 @@
+# Burger & Baguette
+
+Burger & Baguette is a German foodtruck concept for premium smash burgers, gourmet baguettes, branded packaging, and launch planning.
+
+## Public Pages
+
+- [Home](https://burger-baguette.de/) - Concept, menu, brand system, operating model, and business plan overview.
+- [Brand Identity](https://burger-baguette.de/brand) - Logo system, colors, typography, packaging mockups, and signature templates.
+- [Sitemap](https://burger-baguette.de/sitemap.xml) - XML sitemap for public crawlable pages.
+
+## Crawl Guidance
+
+Public marketing and brand pages may be indexed. Private intranet and operations pages should not be indexed.

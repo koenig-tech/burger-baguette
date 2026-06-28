@@ -29,7 +29,11 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
-  app.use(express.static(path.resolve(import.meta.dirname, "../..", "client", "public")));
+  app.use(
+    express.static(
+      path.resolve(import.meta.dirname, "../..", "client", "public")
+    )
+  );
   app.use(vite.middlewares);
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
@@ -74,7 +78,7 @@ export function serveStatic(app: Express) {
         }
 
         if (
-          /(sw\.js|manifest\.webmanifest|robots\.txt|sitemap\.xml)$/.test(
+          /(sw\.js|manifest\.webmanifest|robots\.txt|sitemap\.xml|llms\.txt)$/.test(
             filePath
           )
         ) {
