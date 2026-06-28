@@ -1,5 +1,6 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { Link } from "wouter";
 import BrandLogo from "@/components/BrandLogo";
 import Footer from "@/components/Footer";
 import { BRAND_LOGOS } from "@/lib/brand";
@@ -534,14 +535,14 @@ export default function BrandIdentity() {
               </div>
             </div>
           </div>
-          <Link
+          <a
             href="/"
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--bb-text-muted)] transition-colors hover:text-[var(--bb-gold)]"
             style={{ fontFamily: "'Space Grotesk', sans-serif" }}
           >
             <ArrowLeft size={15} />
             Startseite
-          </Link>
+          </a>
         </div>
       </header>
 
@@ -1017,19 +1018,9 @@ export default function BrandIdentity() {
                     onClick={() =>
                       setOpenDownload(openDownload === d.label ? null : d.label)
                     }
-                    className="inline-flex h-10 items-center justify-center gap-2 rounded-lg border border-[var(--bb-border)] px-3 text-[var(--bb-text-muted)] transition-colors hover:border-[var(--bb-border-strong)] hover:text-[var(--bb-gold)]"
+                    className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-[var(--bb-border)] text-[var(--bb-text-muted)] transition-colors hover:border-[var(--bb-border-strong)] hover:text-[var(--bb-gold)]"
                   >
                     <Download size={17} />
-                    <span
-                      className="hidden text-[0.68rem] font-bold uppercase tracking-[0.14em] sm:inline"
-                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                    >
-                      Download
-                    </span>
-                    <ChevronDown
-                      size={14}
-                      className={`transition-transform duration-200 ${openDownload === d.label ? "rotate-180" : ""}`}
-                    />
                   </button>
                   {openDownload === d.label ? (
                     <div

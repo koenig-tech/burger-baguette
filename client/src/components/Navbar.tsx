@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Link } from "wouter";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
 import BrandLogo from "@/components/BrandLogo";
 import { Check, ChevronDown, Menu, X } from "lucide-react";
@@ -118,7 +117,7 @@ export default function Navbar() {
                 }`;
 
                 return isRoute ? (
-                  <Link
+                  <a
                     key={link.key}
                     href={link.href}
                     aria-current={isActive ? "page" : undefined}
@@ -126,7 +125,7 @@ export default function Navbar() {
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     {t(link.key)}
-                  </Link>
+                  </a>
                 ) : (
                   <a
                     key={link.key}
@@ -235,7 +234,7 @@ export default function Navbar() {
               );
 
               return isRoute ? (
-                <Link
+                <a
                   key={link.key}
                   href={link.href}
                   aria-current={isActive ? "page" : undefined}
@@ -243,7 +242,7 @@ export default function Navbar() {
                   className={`lux-mobile__link ${isActive ? "lux-mobile__link--active" : ""}`}
                 >
                   {content}
-                </Link>
+                </a>
               ) : (
                 <a
                   key={link.key}

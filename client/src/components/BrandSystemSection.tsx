@@ -2,7 +2,6 @@ import BrandLogo from "@/components/BrandLogo";
 import ResponsiveImage from "@/components/ResponsiveImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES, BRAND_MOCKUPS } from "@/lib/brand";
-import { Link } from "wouter";
 import { ArrowRight, Box, MapPin, Shirt, Truck } from "lucide-react";
 
 const palette: [string, string, string, boolean][] = [
@@ -99,13 +98,13 @@ export default function BrandSystemSection() {
               variant="horizontal"
               className="h-12 w-auto max-w-[280px]"
             />
-            <Link
+            <a
               href="/brand"
               className="bb-button bb-button-ghost min-h-12 px-5"
             >
               {t("brand_full_cta")}
               <ArrowRight size={16} />
-            </Link>
+            </a>
           </div>
         </div>
 
