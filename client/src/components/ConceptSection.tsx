@@ -1,5 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES } from "@/lib/brand";
+import ResponsiveImage from "./ResponsiveImage";
 import {
   Flame,
   Route,
@@ -102,8 +103,9 @@ export default function ConceptSection() {
         {/* Cinematic band + notes */}
         <div className="mt-6 grid gap-6 lg:grid-cols-[1.45fr_1fr]">
           <div className="bb-image-tile min-h-[360px] border border-[var(--bb-border)] md:min-h-[460px]">
-            <img
+            <ResponsiveImage
               src={BRAND_IMAGES.location}
+              sizes="(max-width: 1024px) calc(100vw - 3rem), 58vw"
               alt="Burger & Baguette business district lunch service"
               loading="lazy"
               decoding="async"

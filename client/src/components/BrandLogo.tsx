@@ -5,6 +5,12 @@ import { cn } from "@/lib/utils";
 type LogoVariant = "horizontal" | "stacked" | "badge";
 type LogoTone = "auto" | "dark" | "light" | "tan";
 
+const LOGO_DIMENSIONS: Record<LogoVariant, { width: number; height: number }> = {
+  horizontal: { width: 1026, height: 273 },
+  stacked: { width: 670, height: 469 },
+  badge: { width: 680, height: 680 },
+};
+
 interface BrandLogoProps {
   variant?: LogoVariant;
   tone?: LogoTone;
@@ -47,11 +53,14 @@ export default function BrandLogo({
 }: BrandLogoProps) {
   const { theme } = useTheme();
   const src = resolveLogo(variant, tone, theme);
+  const dimensions = LOGO_DIMENSIONS[variant];
 
   return (
     <img
       src={src}
       alt={alt}
+      width={dimensions.width}
+      height={dimensions.height}
       className={cn("block h-auto select-none", className)}
       decoding="async"
       fetchPriority={fetchPriority}

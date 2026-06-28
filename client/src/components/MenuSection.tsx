@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES } from "@/lib/brand";
 import { Sandwich, Wheat, Package } from "lucide-react";
+import ResponsiveImage from "./ResponsiveImage";
 
 type MenuTab = "burgers" | "baguettes" | "extras";
 
@@ -84,8 +85,9 @@ export default function MenuSection() {
           {/* Featured image */}
           <div className="lg:sticky lg:top-24 lg:self-start">
             <figure className="bb-image-tile min-h-[360px] overflow-hidden rounded-2xl border border-[var(--bb-border)] md:min-h-[460px] lg:min-h-[560px]">
-              <img
+              <ResponsiveImage
                 src={menuImages[activeTab]}
+                sizes="(max-width: 1024px) calc(100vw - 3rem), 42vw"
                 alt="Burger & Baguette menu product"
                 loading="lazy"
                 decoding="async"

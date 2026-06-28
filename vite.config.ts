@@ -150,11 +150,74 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
+function deferredEntryLoader(entrySrc: string) {
+  return `<script>
+      (() => {
+        const entrySrc = ${JSON.stringify(entrySrc)};
+        let loaded = false;
+        const loadApp = () => {
+          if (loaded) return;
+          loaded = true;
+          const script = document.createElement("script");
+          script.type = "module";
+          script.crossOrigin = "";
+          script.src = entrySrc;
+          document.head.appendChild(script);
+        };
+        const loadOnIntent = () => loadApp();
+        const intentOptions = { once: true, passive: true };
+        ["pointerdown", "touchstart", "keydown", "scroll"].forEach(eventName => {
+          window.addEventListener(eventName, loadOnIntent, intentOptions);
+        });
+        const scheduleLoad = () => {
+          if (window.location.pathname !== "/" || (window.location.hash && window.location.hash !== "#home")) {
+            loadApp();
+            return;
+          }
+          window.setTimeout(loadApp, 1600);
+        };
+        if (document.readyState === "complete") {
+          scheduleLoad();
+        } else {
+          window.addEventListener("load", scheduleLoad, { once: true });
+        }
+      })();
+    </script>`;
+}
+
+function vitePluginOptimizeBuiltHtml(): Plugin {
+  return {
+    name: "optimize-built-html",
+    enforce: "post",
+    transformIndexHtml(html) {
+      if (process.env.NODE_ENV !== "production") return html;
+
+      let optimizedHtml = html.replace(
+        /<link rel="stylesheet" crossorigin href="([^"]+\.css)">/g,
+        `<link rel="preload" as="style" href="$1"><link rel="stylesheet" href="$1" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="$1"></noscript>`
+      );
+
+      const entryScriptRegex =
+        /<script type="module" crossorigin src="(\/assets\/index-[^"]+\.js)"><\/script>\s*/;
+      const entryScript = optimizedHtml.match(entryScriptRegex);
+
+      if (entryScript?.[1]) {
+        optimizedHtml = optimizedHtml
+          .replace(entryScriptRegex, "")
+          .replace("</body>", `${deferredEntryLoader(entryScript[1])}\n  </body>`);
+      }
+
+      return optimizedHtml;
+    },
+  };
+}
+
 export default defineConfig(({ command }) => {
   const isBuild = command === "build";
   const plugins = [
     react(),
     tailwindcss(),
+    ...(isBuild ? [vitePluginOptimizeBuiltHtml()] : []),
     ...(isBuild
       ? []
       : [

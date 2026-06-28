@@ -1,5 +1,4 @@
 import { useLanguage } from "@/contexts/LanguageContext";
-import { BRAND_IMAGES } from "@/lib/brand";
 import { ArrowRight } from "lucide-react";
 
 const heroStats = [
@@ -13,17 +12,7 @@ export default function HeroSection() {
 
   return (
     <section id="home" className="lux-hero scroll-hero-section">
-      <div className="lux-hero__bg">
-        <img
-          className="scroll-hero-bg"
-          src={BRAND_IMAGES.generatedHero}
-          alt="Burger & Baguette branded foodtruck service"
-          width={1672}
-          height={941}
-          decoding="async"
-          fetchPriority="high"
-        />
-      </div>
+      <div className="lux-hero__bg lux-hero__bg-media" aria-hidden="true" />
       <div className="lux-hero__scrim" />
       <div className="lux-hero__glow" />
       <div className="lux-hero__grain" />
@@ -47,29 +36,19 @@ export default function HeroSection() {
           </p>
 
           <div className="lux-hero__actions hero-enter-delayed">
-            <button
-              type="button"
+            <a
+              href="#menu"
               className="bb-button bb-button-primary px-7"
-              onClick={() =>
-                document
-                  .getElementById("menu")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
             >
               {t("hero_cta")}
               <ArrowRight size={17} />
-            </button>
-            <button
-              type="button"
+            </a>
+            <a
+              href="#businessplan"
               className="bb-button bb-button-ghost px-7"
-              onClick={() =>
-                document
-                  .getElementById("businessplan")
-                  ?.scrollIntoView({ behavior: "smooth" })
-              }
             >
               {t("hero_bp_cta")}
-            </button>
+            </a>
           </div>
 
           <div className="lux-hero__stats hero-enter-delayed">

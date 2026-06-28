@@ -1,6 +1,7 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES } from "@/lib/brand";
 import { Clock3, MessageSquare, PackageCheck, Route } from "lucide-react";
+import ResponsiveImage from "./ResponsiveImage";
 
 const steps = [
   {
@@ -45,8 +46,9 @@ export default function ExperienceSection() {
 
         {/* Cinematic band */}
         <figure className="bb-image-tile mb-14 min-h-[280px] overflow-hidden rounded-2xl border border-[var(--bb-border)] md:min-h-[360px]">
-          <img
+          <ResponsiveImage
             src={BRAND_IMAGES.stickerRoll}
+            sizes="calc(100vw - 3rem)"
             alt="Burger & Baguette event queue brand experience"
             loading="lazy"
             decoding="async"

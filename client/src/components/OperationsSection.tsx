@@ -1,5 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES } from "@/lib/brand";
+import ResponsiveImage from "./ResponsiveImage";
 import {
   ClipboardCheck,
   Flame,
@@ -62,8 +63,9 @@ export default function OperationsSection() {
         <div className="grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           {/* Media */}
           <figure className="bb-image-tile min-h-[340px] overflow-hidden rounded-2xl border border-[var(--bb-border)] md:min-h-[480px]">
-            <img
+            <ResponsiveImage
               src={BRAND_IMAGES.workflow}
+              sizes="(max-width: 1024px) calc(100vw - 3rem), 56vw"
               alt="Burger & Baguette kitchen workflow"
               loading="lazy"
               decoding="async"

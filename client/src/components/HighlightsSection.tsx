@@ -1,5 +1,6 @@
 import { BRAND_IMAGES } from "@/lib/brand";
 import { Flame, MapPin, Leaf, Star } from "lucide-react";
+import ResponsiveImage from "./ResponsiveImage";
 
 export default function HighlightsSection() {
   return (
@@ -24,8 +25,9 @@ export default function HighlightsSection() {
         <div className="grid auto-rows-[minmax(190px,1fr)] grid-cols-2 gap-3 lg:grid-cols-4">
           {/* A — large signature image */}
           <figure className="bb-image-tile group relative col-span-2 row-span-2 overflow-hidden rounded-2xl border border-[var(--bb-border)]">
-            <img
+            <ResponsiveImage
               src={BRAND_IMAGES.burgerBox}
+              sizes="(max-width: 1024px) calc(100vw - 3rem), 48vw"
               alt="Burger & Baguette Signature Smash Burger"
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
@@ -93,8 +95,9 @@ export default function HighlightsSection() {
 
           {/* E — image */}
           <figure className="bb-image-tile group relative overflow-hidden rounded-2xl border border-[var(--bb-border)]">
-            <img
+            <ResponsiveImage
               src={BRAND_IMAGES.friesDrinks}
+              sizes="(max-width: 1024px) 50vw, 24vw"
               alt="Burger & Baguette Fries, Drinks und Saucen"
               className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               loading="lazy"

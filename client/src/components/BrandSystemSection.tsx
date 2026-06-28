@@ -1,4 +1,5 @@
 import BrandLogo from "@/components/BrandLogo";
+import ResponsiveImage from "@/components/ResponsiveImage";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES, BRAND_MOCKUPS } from "@/lib/brand";
 import { Link } from "wouter";
@@ -156,8 +157,9 @@ export default function BrandSystemSection() {
         {/* Asymmetric mosaic */}
         <div className="mt-6 grid gap-3 lg:grid-cols-12">
           <figure className="bb-image-tile relative min-h-[360px] overflow-hidden rounded-2xl border border-[var(--bb-border)] lg:col-span-6 lg:row-span-2 lg:min-h-[560px]">
-            <img
+            <ResponsiveImage
               src={BRAND_IMAGES.brandSystem}
+              sizes="(max-width: 1024px) calc(100vw - 3rem), 48vw"
               alt="Burger & Baguette brand system flatlay"
               loading="lazy"
               decoding="async"
@@ -179,8 +181,9 @@ export default function BrandSystemSection() {
                 key={asset.titleKey}
                 className="bb-image-tile group relative min-h-[260px] overflow-hidden rounded-2xl border border-[var(--bb-border)] lg:col-span-3 lg:min-h-[272px]"
               >
-                <img
+                <ResponsiveImage
                   src={asset.image}
+                  sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1024px) 48vw, 24vw"
                   alt={`Burger & Baguette ${t(asset.titleKey)}`}
                   className="transition-transform duration-700 group-hover:scale-105"
                   loading="lazy"
@@ -226,8 +229,9 @@ export default function BrandSystemSection() {
                 className="group overflow-hidden rounded-lg border border-[var(--bb-border)] bg-[var(--bb-surface)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--bb-border-strong)]"
               >
                 <div className="relative aspect-[4/3] overflow-hidden bg-[var(--bb-surface-strong)]">
-                  <img
+                  <ResponsiveImage
                     src={mockup.image}
+                    sizes="(max-width: 640px) calc(100vw - 3rem), (max-width: 1280px) 48vw, 31vw"
                     alt={`Burger & Baguette ${t(mockup.titleKey)} mockup`}
                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                     loading="lazy"

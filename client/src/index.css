@@ -705,7 +705,7 @@ html.light {
         animation-range: entry 0% exit 100%;
       }
 
-      .scroll-hero-bg {
+      .lux-hero__bg-media {
         animation: scroll-hero-image linear both;
         animation-timeline: --bb-section-progress;
         animation-range: entry 0% exit 100%;
@@ -1781,13 +1781,28 @@ html.light {
     z-index: 0;
   }
 
-  .lux-hero__bg img {
+  .lux-hero__bg-media {
+    background-image: url("/assets/generated-brand/native-series/10-brand-world-hero-1280.webp");
+    background-position: center;
+    background-size: cover;
     width: 100%;
     height: 100%;
-    object-fit: cover;
     transform: scale(1.1);
     animation: lux-pan 24s ease-in-out infinite alternate;
     will-change: transform;
+  }
+
+  @media (max-width: 640px) {
+    .lux-hero__bg-media {
+      background-image: url("/assets/generated-brand/native-series/10-brand-world-hero-1280.webp");
+      background-position: 58% center;
+    }
+  }
+
+  @media (min-width: 1440px) {
+    .lux-hero__bg-media {
+      background-image: url("/assets/generated-brand/native-series/10-brand-world-hero.png.webp");
+    }
   }
 
   @keyframes lux-pan {
@@ -2119,7 +2134,7 @@ html.light {
       scroll-behavior: auto;
     }
 
-    .lux-hero__bg img,
+    .lux-hero__bg-media,
     .lux-hero__scroll-line,
     .hero-bg-motion,
     .hero-enter,

@@ -1,5 +1,6 @@
 import { useLanguage } from "@/contexts/LanguageContext";
 import { BRAND_IMAGES } from "@/lib/brand";
+import ResponsiveImage from "./ResponsiveImage";
 import {
   ArrowRight,
   CalendarDays,
@@ -40,8 +41,9 @@ export default function LaunchSection() {
       <div className="bb-inner container mx-auto px-6">
         {/* Closing panel */}
         <div className="lux-launch relative overflow-hidden rounded-3xl border border-[var(--bb-border-strong)]">
-          <img
+          <ResponsiveImage
             src={BRAND_IMAGES.stickerRoll}
+            sizes="calc(100vw - 3rem)"
             alt="Burger & Baguette launch event queue"
             className="absolute inset-0 h-full w-full object-cover"
             loading="lazy"

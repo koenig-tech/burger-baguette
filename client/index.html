@@ -73,10 +73,158 @@
       rel="preload"
       as="image"
       href="/assets/generated-brand/native-series/10-brand-world-hero.png.webp"
+      imagesrcset="/assets/generated-brand/native-series/10-brand-world-hero-960.webp 960w, /assets/generated-brand/native-series/10-brand-world-hero-1280.webp 1280w, /assets/generated-brand/native-series/10-brand-world-hero.png.webp 1672w"
+      imagesizes="(max-width: 640px) 160vw, 100vw"
       fetchpriority="high"
     />
     <link rel="preload" as="style" href="/fonts/google-fonts.css" />
-    <link rel="stylesheet" href="/fonts/google-fonts.css" />
+    <link
+      rel="stylesheet"
+      href="/fonts/google-fonts.css"
+      media="print"
+      onload="this.media='all'"
+    />
+    <noscript
+      ><link rel="stylesheet" href="/fonts/google-fonts.css"
+    /></noscript>
+    <style>
+      .bb-ssr-shell {
+        inset: 0;
+        min-height: 100svh;
+        overflow: hidden;
+        position: fixed;
+        z-index: 9999;
+        background: #120a04;
+        color: #f4f1ea;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      .bb-ssr-shell__bg {
+        position: absolute;
+        inset: 0;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        opacity: 0.72;
+      }
+
+      .bb-ssr-shell::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(
+            90deg,
+            rgba(18, 10, 4, 0.92),
+            rgba(18, 10, 4, 0.58) 48%,
+            rgba(18, 10, 4, 0.34)
+          ),
+          linear-gradient(0deg, rgba(18, 10, 4, 0.92), transparent 42%);
+      }
+
+      .bb-ssr-shell__nav,
+      .bb-ssr-shell__content {
+        position: relative;
+        z-index: 1;
+        margin: 0 auto;
+        width: min(100% - 2rem, 1280px);
+      }
+
+      .bb-ssr-shell__nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 5rem;
+      }
+
+      .bb-ssr-shell__logo {
+        height: 2.5rem;
+        width: auto;
+      }
+
+      .bb-ssr-shell__content {
+        display: flex;
+        min-height: calc(100svh - 5rem);
+        align-items: center;
+        padding: 4rem 0 6rem;
+      }
+
+      .bb-ssr-shell__kicker,
+      .bb-ssr-shell__cta {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+      }
+
+      .bb-ssr-shell__kicker {
+        color: #c9a84c;
+        font-size: 0.78rem;
+      }
+
+      .bb-ssr-shell__title {
+        margin: 1rem 0 0;
+        max-width: 11ch;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(4rem, 12vw, 8.8rem);
+        line-height: 0.9;
+        letter-spacing: 0;
+      }
+
+      .bb-ssr-shell__amp {
+        color: #c9a84c;
+        font-family: Georgia, "Times New Roman", serif;
+        font-style: italic;
+        font-weight: 500;
+      }
+
+      .bb-ssr-shell__tagline {
+        margin: 1.3rem 0 0;
+        color: #c9a84c;
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: clamp(2rem, 5vw, 3.4rem);
+        font-style: italic;
+        line-height: 1;
+      }
+
+      .bb-ssr-shell__copy {
+        margin: 1.4rem 0 0;
+        max-width: 38rem;
+        color: rgba(244, 241, 234, 0.78);
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        line-height: 1.7;
+      }
+
+      .bb-ssr-shell__cta {
+        display: inline-flex;
+        min-height: 3.25rem;
+        align-items: center;
+        margin-top: 2rem;
+        border-radius: 999px;
+        background: #c9a84c;
+        color: #120a04;
+        padding: 0 1.6rem;
+        text-decoration: none;
+        font-size: 0.78rem;
+      }
+
+      @media (max-width: 640px) {
+        .bb-ssr-shell__bg {
+          object-position: 58% center;
+        }
+
+        .bb-ssr-shell::after {
+          background:
+            linear-gradient(90deg, rgba(18, 10, 4, 0.95), rgba(18, 10, 4, 0.7)),
+            linear-gradient(0deg, rgba(18, 10, 4, 0.92), transparent 48%);
+        }
+      }
+    </style>
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -93,7 +241,49 @@
   </head>
 
   <body>
+    <div id="bb-ssr-shell" class="bb-ssr-shell">
+      <img
+        class="bb-ssr-shell__bg"
+        src="/assets/generated-brand/native-series/10-brand-world-hero.png.webp"
+        srcset="/assets/generated-brand/native-series/10-brand-world-hero-960.webp 960w, /assets/generated-brand/native-series/10-brand-world-hero-1280.webp 1280w, /assets/generated-brand/native-series/10-brand-world-hero.png.webp 1672w"
+        sizes="(max-width: 640px) 160vw, 100vw"
+        alt=""
+        width="1672"
+        height="941"
+        fetchpriority="high"
+        decoding="async"
+      />
+      <header class="bb-ssr-shell__nav" aria-label="Burger & Baguette">
+        <img
+          class="bb-ssr-shell__logo"
+          src="/assets/brand/logo-horizontal-dark-cream.svg"
+          alt="Burger & Baguette"
+          width="220"
+          height="40"
+          fetchpriority="high"
+          decoding="async"
+        />
+      </header>
+      <main class="bb-ssr-shell__content">
+        <div>
+          <p class="bb-ssr-shell__kicker">
+            Mobile Gourmet · Foodtruck · Est. 2025
+          </p>
+          <h1 class="bb-ssr-shell__title">
+            Burger <span class="bb-ssr-shell__amp">&amp;</span> Baguette
+          </h1>
+          <p class="bb-ssr-shell__tagline">Qualität trifft Mobilität</p>
+          <p class="bb-ssr-shell__copy">
+            Premium Smash Burger &amp; Gourmet Baguettes - frisch zubereitet,
+            direkt zu Ihnen.
+          </p>
+          <a class="bb-ssr-shell__cta" href="#menu">Speisekarte entdecken</a>
+        </div>
+      </main>
+    </div>
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <script type="module">
+      import("/src/main.tsx");
+    </script>
   </body>
 </html>
