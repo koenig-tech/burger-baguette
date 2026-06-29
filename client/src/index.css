@@ -1394,26 +1394,78 @@ html.light {
     animation: hero-image-drift 14s ease-in-out infinite alternate;
   }
 
+  /* Navbar sits over the dark hero at the top (dark in both themes), so the
+     resting color is light; once scrolled over content it follows the theme. */
   .site-navbar {
-    backdrop-filter: blur(18px) saturate(1.12);
-    -webkit-backdrop-filter: blur(18px) saturate(1.12);
+    position: fixed;
+    color: #F4F1EA;
+    background: rgba(10, 7, 3, 0.42);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(12px) saturate(1.18);
+    -webkit-backdrop-filter: blur(12px) saturate(1.18);
+    transform: translateZ(0);
+    transition: color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
   }
 
   .site-navbar--scrolled {
-    background: color-mix(in srgb, var(--bb-ink-deep) 80%, transparent);
-    border-bottom: 0;
-    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.32);
+    color: var(--bb-text);
+    background: color-mix(in srgb, var(--bb-ink-deep) 82%, transparent);
+    border-bottom: 1px solid var(--bb-border);
+    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.28);
+    backdrop-filter: blur(12px) saturate(1.18);
+    -webkit-backdrop-filter: blur(12px) saturate(1.18);
+  }
+
+  .site-nav-pill {
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    background: color-mix(in srgb, currentColor 6%, transparent);
+  }
+
+  .site-nav-link {
+    color: inherit;
+    opacity: 0.74;
+    transition: color 0.2s ease, opacity 0.2s ease, background 0.2s ease;
+  }
+
+  .site-nav-link:hover {
+    opacity: 1;
+    color: var(--bb-gold);
   }
 
   .site-nav-link--active {
-    background: rgba(201, 168, 76, 0.16);
-    color: #C9A84C;
-    box-shadow: inset 0 0 0 1px rgba(201, 168, 76, 0.16);
+    opacity: 1;
+    color: var(--bb-gold);
+    background: color-mix(in srgb, var(--bb-gold) 13%, transparent);
   }
 
-  .site-mobile-menu__link--active {
-    background: rgba(201, 168, 76, 0.12);
-    color: #C9A84C;
+  .site-nav-control {
+    color: inherit;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    background: color-mix(in srgb, currentColor 6%, transparent);
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .site-nav-control:hover {
+    color: var(--bb-gold);
+    border-color: color-mix(in srgb, var(--bb-gold) 55%, transparent);
+  }
+
+  .site-nav-menu {
+    background: var(--bb-surface);
+    border: 1px solid var(--bb-border);
+    box-shadow: var(--bb-shadow);
+    color: var(--bb-text);
+  }
+
+  .site-nav-menu__item:hover {
+    background: color-mix(in srgb, var(--bb-gold) 12%, transparent);
+    color: var(--bb-gold);
+  }
+
+  .site-nav-menu__item--active {
+    background: var(--bb-gold);
+    color: var(--bb-ink);
   }
 
   html.light .site-navbar--scrolled {
@@ -1572,149 +1624,13 @@ html.light {
 
   html.light body {
     background:
-      radial-gradient(circle at 16% 4%, rgba(201, 168, 76, 0.2), transparent 28rem),
-      linear-gradient(180deg, #fff8ed 0%, #f8ecd9 48%, #fffaf2 100%);
-    color: #2A1F1B;
-  }
-
-  html.light [class*="bg-[#1E1209]"],
-  html.light [class*="bg-[#160e06]"],
-  html.light [class*="bg-[#120a04]"],
-  html.light [class*="bg-[#0D0804]"] {
-    background-color: #fff7eb !important;
-  }
-
-  html.light [class*="bg-[#2C1810]"] {
-    background-color: rgba(255, 255, 255, 0.78) !important;
-  }
-
-  html.light [class*="bg-[#EDE8DC]/"],
-  html.light [class*="bg-[#F4F1EA]/"] {
-    background-color: rgba(42, 31, 27, 0.08) !important;
-  }
-
-  html.light [class*="bg-[#C9A84C]/"] {
-    background-color: rgba(168, 122, 40, 0.13) !important;
-  }
-
-  html.light [class*="bg-[#C9A84C]"]:not([class*="/"]) {
-    background-color: #a87a28 !important;
-  }
-
-  html.light [class*="hover:bg-[#D4AF37]"]:hover {
-    background-color: #bd8b32 !important;
-  }
-
-  html.light [class*="text-[#F4F1EA]"],
-  html.light [class*="text-[#EDE8DC]"] {
-    color: #2A1F1B !important;
-  }
-
-  html.light [class*="text-[#C9A84C]"] {
-    color: #8b621d !important;
-  }
-
-  html.light [class*="border-[#C9A84C]"] {
-    border-color: rgba(139, 98, 29, 0.28) !important;
-  }
-
-  html.light [class*="border-[#EDE8DC]"],
-  html.light [class*="border-[#F4F1EA]"] {
-    border-color: rgba(42, 31, 27, 0.14) !important;
-  }
-
-  html.light [class*="shadow-black"] {
-    box-shadow: 0 18px 50px rgba(74, 45, 18, 0.14) !important;
-  }
-
-  html.light .site-navbar {
-    background: transparent !important;
-    border-bottom: 0;
-    box-shadow: none !important;
-    backdrop-filter: blur(18px) saturate(1.18);
-    -webkit-backdrop-filter: blur(18px) saturate(1.18);
-  }
-
-  html.light .site-navbar[class*="bg-transparent"],
-  html.light .site-navbar[class*="bg-[#1E1209]/95"] {
-    background-color: transparent !important;
-    background-image: none !important;
-  }
-
-  html.light .site-mobile-menu {
-    background-color: rgba(255, 248, 237, 0.92) !important;
-    background-image: none !important;
-  }
-
-  html.light .site-navbar a,
-  html.light .site-navbar button {
-    text-shadow: none;
-  }
-
-  html.light .site-navbar [class*="text-[#F4F1EA]"],
-  html.light .site-navbar [class*="text-[#EDE8DC]"] {
-    color: #2A1F1B !important;
-  }
-
-  html.light .site-navbar [class*="text-[#C9A84C]"] {
-    color: #8b621d !important;
-  }
-
-  html.light .site-navbar [class*="bg-[#2C1810]"] {
-    background-color: rgba(255, 255, 255, 0.86) !important;
-  }
-
-  html.light .site-navbar [class*="bg-[#1E1209]"] {
-    background-color: rgba(255, 255, 255, 0.62) !important;
-  }
-
-  html.light .site-navbar [class*="bg-[#C9A84C]"]:not([class*="/"]) {
-    background-color: #b98526 !important;
-  }
-
-  html.light .site-navbar [class*="bg-[#C9A84C]"]:not([class*="/"])[class*="text-[#1E1209]"] {
-    color: #211206 !important;
-  }
-
-  html.light .site-nav-link--active,
-  html.light .site-mobile-menu__link--active {
-    background: rgba(168, 122, 40, 0.15) !important;
-    color: #8b621d !important;
-  }
-
-  html.light .hero-section {
-    background-color: #fff4e2 !important;
-  }
-
-  html.light .hero-bg {
-    opacity: 0.42 !important;
-    filter: saturate(0.92) contrast(0.92) brightness(1.08);
-  }
-
-  html.light .hero-overlay {
-    background:
-      radial-gradient(circle at 75% 28%, rgba(185, 133, 38, 0.16), transparent 30rem),
-      linear-gradient(105deg, rgba(255, 248, 237, 0.96) 0%, rgba(255, 248, 237, 0.88) 36%, rgba(255, 248, 237, 0.56) 67%, rgba(255, 248, 237, 0.28) 100%) !important;
-  }
-
-  html.light .hero-bottom-fade {
-    background: linear-gradient(180deg, transparent, #fff7eb) !important;
-  }
-
-  html.light .hero-section [class*="bg-[#160e06]"],
-  html.light .hero-section [class*="bg-[#1E1209]"],
-  html.light .hero-section [class*="bg-[#EDE8DC]/"] {
-    background-color: rgba(255, 255, 255, 0.76) !important;
-  }
-
-  html.light section,
-  html.light footer,
-  html.light .min-h-screen {
-    color: #2A1F1B;
+      radial-gradient(circle at 16% 4%, rgba(201, 168, 76, 0.16), transparent 30rem),
+      linear-gradient(180deg, var(--bb-ink-soft) 0%, var(--bb-ink-deep) 50%, var(--bb-ink-soft) 100%);
+    color: var(--bb-text);
   }
 
   html.light .gold-divider {
-    background: linear-gradient(90deg, transparent, rgba(139, 98, 29, 0.55), transparent);
+    background: linear-gradient(90deg, transparent, rgba(139, 98, 29, 0.5), transparent);
   }
 
   @media (max-width: 420px) {

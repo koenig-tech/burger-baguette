@@ -188,12 +188,12 @@ export default function BrandSystemSection() {
                   loading="lazy"
                   decoding="async"
                 />
-                <figcaption className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[var(--bb-ink-deep)] via-[var(--bb-ink-deep)]/70 to-transparent p-5">
-                  <Icon className="mb-2 text-[var(--bb-gold)]" size={20} />
-                  <div className="lux-head text-lg text-[var(--bb-cream)]">
+                <figcaption className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#080502] via-[#080502]/75 to-transparent p-5 pt-14">
+                  <Icon className="mb-2 text-[#C9A84C]" size={20} />
+                  <div className="lux-head text-lg text-[#F4F1EA]">
                     {t(asset.titleKey)}
                   </div>
-                  <p className="mt-1 text-xs leading-relaxed text-[var(--bb-cream)]/70">
+                  <p className="mt-1 text-xs leading-relaxed text-[#F4F1EA]/75">
                     {t(asset.textKey)}
                   </p>
                 </figcaption>

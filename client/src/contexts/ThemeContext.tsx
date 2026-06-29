@@ -19,35 +19,38 @@ interface ThemeProviderProps {
 export function ThemeProvider({
   children,
   defaultTheme = "light",
-  switchable = false,
+  switchable = true,
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (switchable) {
-      const stored = localStorage.getItem("theme");
-      return (stored as Theme) || defaultTheme;
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
+
+  const applyTheme = (nextTheme: Theme, persist = true) => {
+    const root = document.documentElement;
+    root.classList.toggle("dark", nextTheme === "dark");
+    root.classList.toggle("light", nextTheme === "light");
+    root.dataset.theme = nextTheme;
+    root.style.colorScheme = nextTheme;
+
+    if (persist) {
+      window.localStorage.setItem("theme", nextTheme);
     }
-    return defaultTheme;
-  });
+  };
 
   useLayoutEffect(() => {
-    const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-      root.classList.remove("light");
-    } else {
-      root.classList.remove("dark");
-      root.classList.add("light");
-    }
-    root.dataset.theme = theme;
+    const rootTheme = document.documentElement.dataset.theme;
+    const initialTheme =
+      rootTheme === "light" || rootTheme === "dark" ? rootTheme : defaultTheme;
 
-    if (switchable) {
-      localStorage.setItem("theme", theme);
-    }
-  }, [theme, switchable]);
+    setTheme(initialTheme);
+    applyTheme(initialTheme);
+  }, [defaultTheme]);
 
   const toggleTheme = switchable
     ? () => {
-        setTheme(prev => (prev === "light" ? "dark" : "light"));
+        setTheme(prev => {
+          const nextTheme = prev === "light" ? "dark" : "light";
+          applyTheme(nextTheme);
+          return nextTheme;
+        });
       }
     : undefined;
 

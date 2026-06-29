@@ -519,14 +519,16 @@ export default function BrandIdentity() {
       <header
         className="sticky top-0 z-50 border-b border-[var(--bb-border)] backdrop-blur-xl"
         style={{
-          background: "color-mix(in srgb, var(--bb-ink-deep) 82%, transparent)",
+          background: "color-mix(in srgb, var(--bb-ink-deep) 68%, transparent)",
+          WebkitBackdropFilter: "blur(12px) saturate(1.18)",
+          backdropFilter: "blur(12px) saturate(1.18)",
         }}
       >
         <div className="container mx-auto flex h-16 items-center justify-between px-6">
           <div className="flex items-center gap-3">
             <BrandLogo
               variant="horizontal"
-              tone="dark"
+              tone="auto"
               className="h-8 w-auto max-w-[170px] sm:h-9 sm:max-w-[210px]"
             />
             <div className="leading-tight">

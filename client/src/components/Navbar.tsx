@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useLanguage, Language } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 import BrandLogo from "@/components/BrandLogo";
-import { Check, ChevronDown, Menu, X } from "lucide-react";
+import { Check, ChevronDown, Menu, X, Sun, Moon } from "lucide-react";
 
 const LANGUAGES: { code: Language; label: string }[] = [
   { code: "de", label: "DE" },
@@ -22,6 +23,7 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const { t, language, setLanguage } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [activeHref, setActiveHref] = useState("#home");
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -84,12 +86,21 @@ export default function Navbar() {
   const activeLanguage =
     LANGUAGES.find(lang => lang.code === language) ?? LANGUAGES[0];
 
+  const isLinkActive = (link: (typeof NAV_LINKS)[number]) =>
+    link.kind === "route"
+      ? typeof window !== "undefined" && window.location.pathname === link.href
+      : activeHref === link.href;
+
   return (
     <>
       <nav
-        className={`site-navbar fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "site-navbar--scrolled" : "bg-transparent"
+        className={`site-navbar fixed top-0 left-0 right-0 z-50 ${
+          scrolled ? "site-navbar--scrolled" : ""
         }`}
+        style={{
+          WebkitBackdropFilter: "blur(12px) saturate(1.18)",
+          backdropFilter: "blur(12px) saturate(1.18)",
+        }}
       >
         <div className="container mx-auto px-4 sm:px-6">
           <div className="flex h-16 items-center justify-between gap-3 md:h-20">
@@ -99,39 +110,24 @@ export default function Navbar() {
             >
               <BrandLogo
                 variant="horizontal"
-                className="h-9 w-auto max-w-[180px] sm:h-10 sm:max-w-[220px]"
+                tone={scrolled ? "auto" : "dark"}
+                className="h-9 max-h-9 w-auto max-w-[180px] sm:max-w-[220px]"
                 fetchPriority="high"
               />
             </a>
 
             {/* Desktop Nav Links */}
-            <div className="hidden items-center gap-0.5 rounded-full bg-[#1E1209]/35 p-1 backdrop-blur-md xl:flex">
+            <div className="site-nav-pill hidden items-center gap-0.5 rounded-full p-1 backdrop-blur-md xl:flex">
               {NAV_LINKS.map(link => {
-                const isRoute = link.kind === "route";
-                const isActive = isRoute
-                  ? typeof window !== "undefined" &&
-                    window.location.pathname === link.href
-                  : activeHref === link.href;
-                const linkClassName = `site-nav-link relative rounded-full px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-200 hover:bg-[#C9A84C]/10 hover:text-[#C9A84C] ${
-                  isActive ? "site-nav-link--active" : "text-[#EDE8DC]/72"
-                }`;
-
-                return isRoute ? (
+                const isActive = isLinkActive(link);
+                return (
                   <a
                     key={link.key}
                     href={link.href}
                     aria-current={isActive ? "page" : undefined}
-                    className={linkClassName}
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-                  >
-                    {t(link.key)}
-                  </a>
-                ) : (
-                  <a
-                    key={link.key}
-                    href={link.href}
-                    aria-current={isActive ? "page" : undefined}
-                    className={linkClassName}
+                    className={`site-nav-link relative rounded-full px-3.5 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] ${
+                      isActive ? "site-nav-link--active" : ""
+                    }`}
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     {t(link.key)}
@@ -140,7 +136,7 @@ export default function Navbar() {
               })}
             </div>
 
-            {/* Language Switcher + Mobile Toggle */}
+            {/* Controls */}
             <div className="flex shrink-0 items-center gap-2 sm:gap-3">
               {/* Language Switcher */}
               <div className="relative">
@@ -149,7 +145,7 @@ export default function Navbar() {
                   aria-label={`Sprache wechseln, aktuell ${activeLanguage.label}`}
                   aria-expanded={languageOpen}
                   onClick={() => setLanguageOpen(open => !open)}
-                  className="flex h-9 min-w-[74px] items-center justify-between gap-2 rounded-full border border-[#C9A84C]/30 bg-[#2C1810]/80 px-3 text-sm font-bold text-[#C9A84C] shadow-lg shadow-black/10 transition-all duration-200 hover:border-[#C9A84C]/60 hover:bg-[#C9A84C]/15"
+                  className="site-nav-control flex h-9 min-w-[72px] items-center justify-between gap-2 rounded-full px-3 text-sm font-bold"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
                   <span>{activeLanguage.label}</span>
@@ -160,7 +156,7 @@ export default function Navbar() {
                 </button>
 
                 {languageOpen && (
-                  <div className="absolute right-0 top-12 z-50 w-32 overflow-hidden rounded-lg border border-[#C9A84C]/25 bg-[#1E1209]/98 p-1 shadow-xl shadow-black/30 backdrop-blur-md">
+                  <div className="site-nav-menu absolute right-0 top-12 z-50 w-32 overflow-hidden rounded-lg p-1">
                     {LANGUAGES.map(lang => (
                       <button
                         key={lang.code}
@@ -169,10 +165,8 @@ export default function Navbar() {
                           setLanguage(lang.code);
                           setLanguageOpen(false);
                         }}
-                        className={`flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold transition-colors ${
-                          language === lang.code
-                            ? "bg-[#C9A84C] text-[#1E1209]"
-                            : "text-[#EDE8DC]/75 hover:bg-[#C9A84C]/10 hover:text-[#C9A84C]"
+                        className={`site-nav-menu__item flex w-full items-center justify-between rounded-md px-3 py-2 text-sm font-semibold transition-colors ${
+                          language === lang.code ? "site-nav-menu__item--active" : ""
                         }`}
                         style={{ fontFamily: "'DM Sans', sans-serif" }}
                       >
@@ -184,11 +178,24 @@ export default function Navbar() {
                 )}
               </div>
 
+              {/* Theme toggle */}
+              {toggleTheme && (
+                <button
+                  type="button"
+                  aria-label={theme === "dark" ? "Helles Design aktivieren" : "Dunkles Design aktivieren"}
+                  title={theme === "dark" ? "Light Mode" : "Dark Mode"}
+                  onClick={toggleTheme}
+                  className="site-nav-control flex h-9 w-9 items-center justify-center rounded-full"
+                >
+                  {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+                </button>
+              )}
+
               {/* Mobile Toggle */}
               <button
                 type="button"
                 aria-label={mobileOpen ? "Menu schliessen" : "Menu oeffnen"}
-                className="flex h-9 w-9 items-center justify-center rounded-full border border-[#C9A84C]/25 bg-[#2C1810]/70 text-[#EDE8DC] transition-colors hover:text-[#C9A84C] xl:hidden"
+                className="site-nav-control flex h-9 w-9 items-center justify-center rounded-full xl:hidden"
                 onClick={() => setMobileOpen(!mobileOpen)}
               >
                 {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -205,10 +212,7 @@ export default function Navbar() {
       >
         <div className="container mx-auto flex h-full flex-col px-5">
           <div className="lux-mobile__head">
-            <BrandLogo
-              variant="horizontal"
-              className="h-9 w-auto max-w-[180px]"
-            />
+            <BrandLogo variant="horizontal" className="h-9 w-auto max-w-[180px]" />
             <button
               type="button"
               aria-label="Menu schliessen"
@@ -221,37 +225,17 @@ export default function Navbar() {
 
           <nav className="lux-mobile__links" aria-label="Mobile">
             {NAV_LINKS.map((link, index) => {
-              const isRoute = link.kind === "route";
-              const isActive = isRoute
-                ? typeof window !== "undefined" &&
-                  window.location.pathname === link.href
-                : activeHref === link.href;
-              const content = (
-                <>
+              const isActive = isLinkActive(link);
+              return (
+                <a
+                  key={link.key}
+                  href={link.href}
+                  aria-current={isActive ? "page" : undefined}
+                  onClick={() => setMobileOpen(false)}
+                  className={`lux-mobile__link ${isActive ? "lux-mobile__link--active" : ""}`}
+                >
                   <span className="lux-mobile__idx">0{index + 1}</span>
                   {t(link.key)}
-                </>
-              );
-
-              return isRoute ? (
-                <a
-                  key={link.key}
-                  href={link.href}
-                  aria-current={isActive ? "page" : undefined}
-                  onClick={() => setMobileOpen(false)}
-                  className={`lux-mobile__link ${isActive ? "lux-mobile__link--active" : ""}`}
-                >
-                  {content}
-                </a>
-              ) : (
-                <a
-                  key={link.key}
-                  href={link.href}
-                  aria-current={isActive ? "page" : undefined}
-                  onClick={() => setMobileOpen(false)}
-                  className={`lux-mobile__link ${isActive ? "lux-mobile__link--active" : ""}`}
-                >
-                  {content}
                 </a>
               );
             })}

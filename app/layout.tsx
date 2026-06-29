@@ -7,6 +7,19 @@ const siteUrl = "https://burger-baguette.de";
 const ogImage = `${siteUrl}/assets/seo/og-image.jpg`;
 const description =
   "Burger & Baguette ist ein mobiles Foodtruck-Konzept für Premium Smash Burger, Gourmet Baguettes, starke Verpackung und einen klaren Businessplan.";
+const themeInitScript = `
+(function() {
+  try {
+    var theme = window.localStorage.getItem("theme");
+    if (theme !== "light" && theme !== "dark") theme = "dark";
+    var root = document.documentElement;
+    root.classList.remove(theme === "dark" ? "light" : "dark");
+    root.classList.add(theme);
+    root.dataset.theme = theme;
+    root.style.colorScheme = theme;
+  } catch (_) {}
+})();
+`;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -21,11 +34,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  manifest: "/manifest.webmanifest",
   icons: {
     icon: "/assets/brand/logo-badge-dark.svg",
     shortcut: "/assets/brand/logo-badge-dark.svg",
-    apple: "/assets/brand/logo-badge-dark.svg",
   },
   openGraph: {
     type: "website",
@@ -56,7 +67,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2A1F1B",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
@@ -65,8 +77,12 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang="de" dir="ltr" className="dark" data-theme="dark">
+    <html lang="de" dir="ltr" className="dark" data-theme="dark" suppressHydrationWarning>
       <head>
+        <script
+          id="bb-theme-init"
+          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+        />
         <link rel="stylesheet" href="/fonts/google-fonts.css" />
       </head>
       <body>
